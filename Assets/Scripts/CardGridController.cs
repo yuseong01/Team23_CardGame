@@ -1,30 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 using UnityEngine.UI;
 
 public class CardGridController : MonoBehaviour
 {
-    [SerializeField] GameObject testCardPrefab;
-    [SerializeField] Transform cardParent;
-    [SerializeField] GridLayoutGroup gridParent;
+    private List<GameObject> cardObejctList;
 
-    [SerializeField] Vector2 gridSpacing;
-
-    [SerializeField] int gridCellSize;
 
     [SerializeField] int testLevel;
 
-    public int totalCardCount;
 
-    private List<GameObject> cardObejctList;
+    [SerializeField] int defalutGridSize;
+
+    [SerializeField] GameObject testCardPrefab;
+    [SerializeField] RectTransform cardParent;
+    [SerializeField] GridLayoutGroup cardParentGrid;
+
+    [SerializeField] Vector2 gridCellSpacing;
 
     private void Awake()
     {
         cardObejctList = new();
 
-        gridParent.spacing = gridSpacing;
+        cardParentGrid.spacing = gridCellSpacing;
     }
 
     private void Update()
@@ -33,20 +32,29 @@ public class CardGridController : MonoBehaviour
         {
             DisableCards();
 
-            EnableCards(testLevel);
+            InitNewGame(testLevel);
         }
     }
 
-    public void EnableCards(int levelValue)
+    public void InitNewGame(int levelValue)
     {
-        if(levelValue < 0)
-        {
-            return;
-        }
+        var totalGridSize = defalutGridSize + levelValue;
 
-        totalCardCount = (gridCellSize + levelValue) * (gridCellSize + levelValue);
+        cardParentGrid.constraintCount = totalGridSize;
 
-        for (int i = 0; i < totalCardCount; i++)
+        EnableCards(totalGridSize);
+    }
+
+    public void InitEndGame()
+    {
+        DisableCards();
+    }
+
+
+
+    void EnableCards(int totalGridSize)
+    {
+        for (int i = 0; i < totalGridSize * totalGridSize; i++)
         {
             var targetCardObject = cardParent.childCount <= i ?
                 Instantiate(testCardPrefab, cardParent) :
@@ -58,7 +66,8 @@ public class CardGridController : MonoBehaviour
         }
     }
 
-    private void DisableCards()
+
+    void DisableCards()
     {
         foreach (var item in cardObejctList)
         {
