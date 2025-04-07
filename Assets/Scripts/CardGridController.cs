@@ -1,30 +1,31 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Burst.Intrinsics;
 
 public class CardGridController : MonoBehaviour
 {
-    private List<GameObject> cardObejctList;
+    private int defalutColumnCount = 3;
 
+    private Queue<GameObject> cardObejctQue = new();
+
+
+    int[] testMemberArr = { 0, 1, 2, 3, 4 };
 
     [SerializeField] int testLevel;
-
-
-    [SerializeField] int defalutGridSize;
-
-    [SerializeField] GameObject testCardPrefab;
-    [SerializeField] RectTransform cardParent;
-    [SerializeField] GridLayoutGroup cardParentGrid;
+    [SerializeField] List<int> testCardCellList = new();
 
     [SerializeField] Vector2 gridCellSpacing;
 
-    private void Awake()
-    {
-        cardObejctList = new();
+    [Space(10f)]
+    [SerializeField] RectTransform testCardPrefab;
+    [SerializeField] RectTransform cardParent;
+    [SerializeField] GridLayoutGroup cardParentGrid;
 
-        cardParentGrid.spacing = gridCellSpacing;
-    }
+   
+
 
     private void Update()
     {
@@ -38,11 +39,17 @@ public class CardGridController : MonoBehaviour
 
     public void InitNewGame(int levelValue)
     {
-        var totalGridSize = defalutGridSize + levelValue;
+        var leveledColumnCount = defalutColumnCount + levelValue;
 
-        cardParentGrid.constraintCount = totalGridSize;
+        var totalCardCount = leveledColumnCount * (leveledColumnCount - 1);
 
-        EnableCards(totalGridSize);
+
+        InitGrid(leveledColumnCount);
+
+        InitCardCellList(totalCardCount);
+
+
+        EnableCards(totalCardCount);
     }
 
     public void InitEndGame()
@@ -50,31 +57,67 @@ public class CardGridController : MonoBehaviour
         DisableCards();
     }
 
-
-
-    void EnableCards(int totalGridSize)
+    void InitCardCellList(int totalCardCount)
     {
-        for (int i = 0; i < totalGridSize * totalGridSize; i++)
+        int memberIndex = 0;
+
+        var newMemberArr = testMemberArr;
+
+        for (int i = 0; i < totalCardCount; i += 2)
+        {
+            if (memberIndex == newMemberArr.Length || i == 0)
+            {
+                memberIndex = 0;
+                newMemberArr = newMemberArr.OrderBy(x => Random.value).ToArray();
+            }
+
+            testCardCellList.Add(newMemberArr[memberIndex]);
+            testCardCellList.Add(newMemberArr[memberIndex]);
+
+            memberIndex++;
+        }
+
+        testCardCellList = testCardCellList.OrderBy(x => Random.value).ToList();
+    }
+
+
+    void InitGrid(int leveledColumnCount)
+    {
+        float cellSizeX = (cardParent.sizeDelta.x - gridCellSpacing.x * leveledColumnCount) / leveledColumnCount;
+        
+        float cellSizeY = cellSizeX * (testCardPrefab.sizeDelta.y / testCardPrefab.sizeDelta.x);
+
+        cardParentGrid.cellSize = new Vector2(cellSizeX, cellSizeY);
+
+        cardParentGrid.spacing = gridCellSpacing;
+    }
+
+
+
+    void EnableCards(int totalCardCount)
+    {
+        for (int i = 0; i < totalCardCount; i++)
         {
             var targetCardObject = cardParent.childCount <= i ?
-                Instantiate(testCardPrefab, cardParent) :
+                Instantiate(testCardPrefab.gameObject, cardParent) :
                 cardParent.GetChild(i).gameObject;
 
             targetCardObject.SetActive(true);
 
-            cardObejctList.Add(targetCardObject);
+            cardObejctQue.Enqueue(targetCardObject);
+
+            /*
+             * targetCardObject < testCardCellList วาด็
+             */
         }
     }
 
 
     void DisableCards()
     {
-        foreach (var item in cardObejctList)
+        while (cardObejctQue.Count > 0)
         {
-            item.SetActive(false);
+            cardObejctQue.Dequeue().SetActive(false);
         }
-
-        cardObejctList.Clear();
     }
-
 }
