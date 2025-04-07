@@ -34,7 +34,10 @@ public class Card : MonoBehaviour
             GameManager.Instance.Matched();
         }
     }
+    //정답일경우 - ?
 
+
+    //오답일경우 - 카드 다시뒤집기
     public void ReflipCard()
     {
         //카드 확인 여유를 위해 지연동작

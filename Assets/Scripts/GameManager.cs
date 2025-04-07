@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -8,13 +9,15 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] Color startColor;
+
     public static GameManager Instance;
-    public RectTransform timeBar;
-    public Image barImage;
+    public Image timeBar;
     public GameObject endPanel;
     public Card firstCard;
     public Card secondCard;
     public int remainCard;
+    public int level;
 
     AudioSource audioSource;
     public AudioClip success;
@@ -22,7 +25,6 @@ public class GameManager : MonoBehaviour
 
     float time;
     float timeLimit;
-    int level;
 
     private void Awake()
     {
@@ -43,25 +45,11 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         //레벨별 제한시간 설정
-        switch (level)
-        {
-            case 1:
-                timeLimit = 30.0f;
-                break;
-            case 2:
-                timeLimit = 40.0f;
-                break;
-            case 3:
-                timeLimit = 50.0f;
-                break;
-            default:
-                timeLimit = 30.0f;
-                break;
-        }
+        SetTimeLimit(level);
 
         time = 0.0f;
         Time.timeScale = 1.0f;
-        timeBar.localScale = new Vector3(0, 1, 1);
+        timeBar.fillAmount = 0.0f;
     }
 
     // Update is called once per frame
@@ -70,21 +58,10 @@ public class GameManager : MonoBehaviour
         //시간이 지나갈수록 타임바가 차오름
         time += Time.deltaTime;
         float progress = Mathf.Clamp01(time / timeLimit);
-        timeBar.localScale = new Vector3(progress, 1, 1);
+        timeBar.fillAmount = progress;
 
         //타임바의 비율에 따라 타임바 색 조정
-        if (progress < 0.5f)
-        {
-            // 연두색 → 노란색
-            float t = progress / 0.5f;
-            barImage.color = Color.Lerp(new Color(0.6f, 1f, 0.2f), Color.yellow, t);
-        }
-        else
-        {
-            // 노란색 → 빨간색
-            float t = (progress - 0.5f) / 0.5f;
-            barImage.color = Color.Lerp(Color.yellow, Color.red, t);
-        }
+        TimeBarColor(progress);
 
         if (time >= timeLimit)
         {
@@ -93,6 +70,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //레벨별 제한시간 설정
+    public void SetTimeLimit(int level)
+    {
+        timeLimit = 20f + (level * 10f);
+    }
+
+    //타임바의 비율에 따라 타임바 색 조정
+    public void TimeBarColor(float progress)
+    {
+        if (progress < 0.5f)
+        {
+            // 연두색 → 노란색
+            float t = progress / 0.5f;
+            timeBar.color = Color.Lerp(startColor, Color.yellow, t);
+        }
+        else
+        {
+            // 노란색 → 빨간색
+            float t = (progress - 0.5f) / 0.5f;
+            timeBar.color = Color.Lerp(Color.yellow, Color.red, t);
+        }
+    }
+
+    //카드 정답 여부 확인
     public void Matched()
     {
         //두 카드가 같다면
