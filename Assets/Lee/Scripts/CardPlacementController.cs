@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Unity.Burst.Intrinsics;
 
 public class CardPlacementController : MonoBehaviour
 {
@@ -11,45 +10,26 @@ public class CardPlacementController : MonoBehaviour
 
     private Queue<GameObject> cardObejctQue = new();
 
-
-    int[] testMemberArr = { 0, 1, 2, 3, 4 };
-
-    [SerializeField] int testLevel;
-    [SerializeField] List<int> testCardCellList = new();
-
+    [Space(10f)]
     [SerializeField] Vector2 gridCellSpacing;
 
     [Space(10f)]
-    [SerializeField] RectTransform testCardPrefab;
-    [SerializeField] RectTransform cardParent;
     [SerializeField] GridLayoutGroup cardParentGrid;
+    [SerializeField] RectTransform cardParentRectTransform;
 
-   
-
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            DisableCards();
-
-            InitNewGame(testLevel);
-        }
-    }
-
-    public void InitNewGame(int levelValue)
+    
+    public int[] InitStartGame(int levelValue, int memberCount, GameObject cardPrefab)
     {
         var leveledColumnCount = defalutColumnCount + levelValue;
 
         var totalCardCount = leveledColumnCount * (leveledColumnCount - 1);
 
 
-        InitGrid(leveledColumnCount);
+        SetCellSize(leveledColumnCount, cardPrefab.GetComponent<RectTransform>());
 
-        InitCardCellList(totalCardCount);
+        EnableCards(totalCardCount, cardPrefab);
 
-
-        EnableCards(totalCardCount);
+        return GetCardRandCells(totalCardCount, memberCount);
     }
 
     public void InitEndGame()
@@ -57,61 +37,67 @@ public class CardPlacementController : MonoBehaviour
         DisableCards();
     }
 
-    void InitCardCellList(int totalCardCount)
+
+
+    int[] GetCardRandCells(int totalCardCount, int memberCount)
     {
         int memberIndex = 0;
 
-        var newMemberArr = testMemberArr;
+        List<int> memberIndexList = new();
 
-        for (int i = 0; i < totalCardCount; i += 2)
+        List<int> memberRandCellList = new();
+
+        for (int i = 0; i < memberCount; i++)
         {
-            if (memberIndex == newMemberArr.Length || i == 0)
+            memberIndexList.Add(i);
+        }
+
+
+        for (int i = 0; i < totalCardCount; i+= 2)
+        {
+            if (memberIndex == memberIndexList.Count || i == 0)
             {
                 memberIndex = 0;
-                newMemberArr = newMemberArr.OrderBy(x => Random.value).ToArray();
+
+                memberIndexList = memberIndexList.OrderBy(x => Random.value).ToList();
             }
 
-            testCardCellList.Add(newMemberArr[memberIndex]);
-            testCardCellList.Add(newMemberArr[memberIndex]);
+            for (int j = 0; j < 2; j++)
+            {
+                memberRandCellList.Add(memberIndexList[memberIndex]);
+            }
 
             memberIndex++;
         }
 
-        testCardCellList = testCardCellList.OrderBy(x => Random.value).ToList();
+        return memberRandCellList.OrderBy(x => Random.value).ToArray();
     }
 
 
-    void InitGrid(int leveledColumnCount)
+    void SetCellSize(int leveledColumnCount ,RectTransform targetRect)
     {
-        float cellSizeX = (cardParent.sizeDelta.x - gridCellSpacing.x * leveledColumnCount) / leveledColumnCount;
-        
-        float cellSizeY = cellSizeX * (testCardPrefab.sizeDelta.y / testCardPrefab.sizeDelta.x);
+        float cellSizeX = (cardParentRectTransform.sizeDelta.x - gridCellSpacing.x * leveledColumnCount) / leveledColumnCount;
+
+        float cellSizeY = cellSizeX * (targetRect.sizeDelta.y / targetRect.sizeDelta.x);
 
         cardParentGrid.cellSize = new Vector2(cellSizeX, cellSizeY);
 
         cardParentGrid.spacing = gridCellSpacing;
     }
 
-
-
-    void EnableCards(int totalCardCount)
+    void EnableCards(int totalCardCount, GameObject cardPrefab)
     {
         for (int i = 0; i < totalCardCount; i++)
         {
-            var targetCardObject = cardParent.childCount <= i ?
-                Instantiate(testCardPrefab.gameObject, cardParent) :
-                cardParent.GetChild(i).gameObject;
+            var targetCardObject = cardParentRectTransform.childCount <= i ?
+                Instantiate(cardPrefab.gameObject, cardParentRectTransform) :
+                cardParentRectTransform.GetChild(i).gameObject;
 
             targetCardObject.SetActive(true);
 
             cardObejctQue.Enqueue(targetCardObject);
-
-            /*
-             * targetCardObject < testCardCellList วาด็
-             */
         }
     }
-
 
     void DisableCards()
     {
