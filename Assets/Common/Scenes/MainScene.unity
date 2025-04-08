@@ -300,6 +300,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f28488acae9830b41af02f7dd8fa09a1, type: 3}
+
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,15 +926,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
-  - {fileID: 916186482}
-  - {fileID: 1907632821}
-  - {fileID: 1411541336}
-  - {fileID: 999960612}
-  - {fileID: 905183383}
-  - {fileID: 795652363}
-  - {fileID: 512892491}
