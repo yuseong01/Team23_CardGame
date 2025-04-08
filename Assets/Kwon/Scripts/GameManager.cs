@@ -5,19 +5,20 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] Color startColor;
-
     public static GameManager Instance;
-    public Image timeBar;
-    //public GameObject endPanel;
-    //public Card firstCard;
-    //public Card secondCard;
-    public int remainCard = 16;
-    public int level;
+
+    [SerializeField] private Color startColor;
+    [SerializeField] private Image timeBar;
+    [SerializeField] private int level = 0;
+    [SerializeField] private int remainCard = 16;
 
     AudioSource audioSource;
     public AudioClip success;
-    public AudioClip fail;
+    public AudioClip failure;
+
+    //public GameObject endPanel;
+    //public Card firstCard;
+    //public Card secondCard;
 
     float time;
     float timeLimit;
@@ -70,7 +71,7 @@ public class GameManager : MonoBehaviour
     public void SetTimeLimit(int remainCard,  int level)
     {
         this.remainCard = remainCard;
-        timeLimit = 20f + (level * 10f);
+        timeLimit = 30f + (level * 10f);
     }
 
     //타임바의 비율에 따라 타임바 색 조정
@@ -107,7 +108,7 @@ public class GameManager : MonoBehaviour
         else
         {
             //실패 사운드클립
-            audioSource.PlayOneShot(fail);
+            audioSource.PlayOneShot(failure);
             //카드 다시 뒤집기
             firstCard.ReflipCard();
             secondCard.ReflipCard();
