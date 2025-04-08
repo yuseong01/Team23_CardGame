@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class StageBtn : MonoBehaviour
 {
-    [SerializeField] GameObject StageImages;
     [SerializeField] Text stageText;
     [SerializeField] Button button;
     [SerializeField] int level;
