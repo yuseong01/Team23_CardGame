@@ -9,7 +9,7 @@ public class Cards : MonoBehaviour
 
     public Animator anim;
     int idx;
-    
+
 
     public void Setting(int idx)
     {
