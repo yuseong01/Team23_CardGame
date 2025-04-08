@@ -21,9 +21,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioClip success;
     [SerializeField] private AudioClip failure;
 
-    //public GameObject endPanel;
-    //public Card firstCard;
-    //public Card secondCard;
+    public GameObject endPanel;
+    public Cards firstCard;
+    public Cards secondCard;
 
     private MemberSprite member;
 

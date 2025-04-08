@@ -2,24 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class Cards : MonoBehaviour
 {
     public GameObject front;
     public GameObject back;
 
     public Animator anim;
     int idx;
+    
 
-    // Start is called before the first frame update
-    void Start()
+    public void Setting(int idx)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //number을 매개변수로 카드의 idx초기화, 스프라이트 또한 변경
+        this.idx = idx;
+        //frontImage.sprite = Resources.Load<Sprite>($"rtan{idx}");
     }
 
     public void OpenCard()
