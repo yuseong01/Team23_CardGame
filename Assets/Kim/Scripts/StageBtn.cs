@@ -6,26 +6,29 @@ using UnityEngine.UI;
 
 public class StageBtn : MonoBehaviour
 {
-    public int diffcult = 0; //스테이지 난이도
-    public GameObject StagImages;
+    [SerializeField] GameObject StageImages;
+    [SerializeField] Text stageText;
+    [SerializeField] Button button;
+    [SerializeField] int level;
 
-    [SerializeField] StageBtnController btnController;
-
-    public Text stageText;
-    public Button button;
-
-
-    public void Init(int level)
+    public void Init(int _level)
     {
-        stageText.text= "Stage "+level.ToString();
+        this.level = _level;
+        stageText.text = "Stage " + _level.ToString();
 
-        button.onClick.AddListener(() => Stage(level));
+        //게임매니저에서 처리
+
+        //if (GameManager.instance.clearedLevel <= _level)
+        //{
+        //    button.onClick.AddListener(() => StartStage(_level));
+        //}
+
     }
-    public void Stage(int diffcult)
+    public void StartStage(int _level)
     {
-        diffcult = this.diffcult;
-        //if(diffcult) { }
-
+        //게임매니저
+        //GameManager.instance.StartGame(_level);
     }
 
 }
+

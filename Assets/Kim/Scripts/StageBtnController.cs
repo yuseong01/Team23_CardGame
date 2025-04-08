@@ -7,20 +7,14 @@ public class StageBtnController : MonoBehaviour
     [SerializeField] private Transform StageBtnPrefabParents;
     [SerializeField] private  StageBtn StageBtnPrefab;
 
-    [SerializeField] int level;
+    int levelText = 1;
 
-    private void Update()
+    public void StageButtonCreate(int stageCount)
     {
-        if (Input.GetKeyUp(KeyCode.A))
+        for(int i = 0; i < stageCount; i++)
         {
-            StageButtonCreate(level);
-            level++;
+            Instantiate(StageBtnPrefab, StageBtnPrefabParents).Init(levelText);
+            levelText++;
         }
-    }
-
-    public void StageButtonCreate(int level)
-    {
-        level = this.level;
-        Instantiate(StageBtnPrefab, StageBtnPrefabParents).Init(level);
     }
 }

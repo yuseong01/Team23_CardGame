@@ -134,8 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64a9daba1aeecd4cb16331ab373304e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  diffcult: 1
-  StagImages: {fileID: 0}
+  StagImages: {fileID: 3081107080714398721, guid: 893e5874ed66ecd4c83edb4b80830812, type: 3}
   stageText: {fileID: 4778198670852337706}
   button: {fileID: 8537490746381722804}
 --- !u!1 &4214240527420766656
