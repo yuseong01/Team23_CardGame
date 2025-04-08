@@ -456,7 +456,7 @@ GameObject:
   - component: {fileID: 1580709634}
   - component: {fileID: 1580709633}
   m_Layer: 0
-  m_Name: Card Placement Controller
+  m_Name: Card Grid Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -474,14 +474,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 978d0ab33c1d5a843bec505825fccfe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   defalutColumnCount: 3
   testMemberArr: 0000000001000000020000000300000004000000
+=======
+  memberList: 
+>>>>>>> parent of 7385360 (refactor : cardGridController.cs 이름 수정)
   testLevel: 2
-  testCardCellList: 
   gridCellSpacing: {x: 20, y: 20}
   testCardPrefab: {fileID: 3217729373244458003, guid: d22bf09eedb469d4fbf523bd1341def6, type: 3}
   cardParent: {fileID: 839927963}
   cardParentGrid: {fileID: 839927964}
+  testList: 
+  testMemberCount: 0000000001000000020000000300000004000000
 --- !u!4 &1580709634
 Transform:
   m_ObjectHideFlags: 0
