@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Unity.Burst.Intrinsics;
 
-public class CardGridController : MonoBehaviour
+public class CardPlacementController : MonoBehaviour
 {
     private int defalutColumnCount = 3;
 
