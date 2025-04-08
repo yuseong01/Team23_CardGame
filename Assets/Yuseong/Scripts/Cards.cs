@@ -12,19 +12,10 @@ public class Cards : MonoBehaviour
 
     public (int, int) key;
 
-    public int idx;
-
     public void Init((int, int) key, Sprite targetSprite)
     {
         this.key = key;
         backImage.sprite = targetSprite;
-    }
-
-    public void Setting(int idx)
-    {
-        //number을 매개변수로 카드의 idx초기화, 스프라이트 또한 변경
-        this.idx = idx;
-        //frontImage.sprite = Resources.Load<Sprite>($"rtan{idx}");
     }
 
     public void OpenCard()
@@ -32,5 +23,26 @@ public class Cards : MonoBehaviour
         anim.SetBool("isOpen", true);
         frontImage.gameObject.SetActive(true);
         backImage.gameObject.SetActive(false);
+        if(GameManager.instance.firstCard == null)
+        {
+            GameManager.instance.firstCard = this;
+        }
+        else
+        {
+            GameManager.instance.secondCard = this;
+            GameManager.instance.Matched();
+        }
+    }
+
+    public void CloseCard()
+    {
+        Invoke(nameof(CloseCardInvoke), 0.5f);
+    }
+
+    public void CloseCardInvoke()
+    {
+        anim.SetBool("isOpen", false);
+        frontImage.gameObject.SetActive(false);
+        backImage.gameObject.SetActive(true);
     }
 }

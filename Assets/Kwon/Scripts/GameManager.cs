@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [SerializeField] private CardPlacementController cardPlacementController;
-    [SerializeField] private GameObject card;
+    [SerializeField] private Cards card;
     [SerializeField] private Color startColor;
     [SerializeField] private Image timeBar;
     [SerializeField] private int level = 0;
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     public Cards secondCard;
     public int clearedLevel = 0;
 
-    private MemberSprite member;
+    private MemberSpritesContainer memberSpritesContainer;
 
     float time = 0.0f;
     float timeLimit;
@@ -52,8 +52,11 @@ public class GameManager : MonoBehaviour
         //PlayerPrefs에 저장된게 있으면 clearedLevel 초기화
         if (PlayerPrefs.HasKey(levelkey)) { clearedLevel = PlayerPrefs.GetInt(levelkey); }
 
-        member = new MemberSprite();
-        member.Init(members1, members2, members3);
+        memberSpritesContainer = new MemberSpritesContainer();
+        memberSpritesContainer.Init(5);
+        memberSpritesContainer.AddSprites(members1);
+        memberSpritesContainer.AddSprites(members2);
+        memberSpritesContainer.AddSprites(members3);
     }
 
     // Start is called before the first frame update
@@ -73,23 +76,24 @@ public class GameManager : MonoBehaviour
     public void StartGame(int level)
     {
         //카드 배치 로직
-        /*
-        remainCard = cardPlacementController.InitStartGame(level, member);
-        */
+        List<Cards> remain = cardPlacementController.StartCardPlacement(level, memberSpritesContainer, card);
+        remainCard = remain.Count;
+
         time = 0.0f;
         Time.timeScale = 1.0f;
         timeBar.fillAmount = 0.0f;
 
-        SetTimeLimit(level, remainCard);  // 레벨에 따라 timeLimit 설정
+        SetTimeLimit(level);  // 레벨에 따라 timeLimit 설정
 
         isPlaying = true;
         StartCoroutine(TimeFlowCoroutine()); // 시간 흐름 시작
+
+        
     }
 
     //레벨별 제한시간 설정
-    public void SetTimeLimit(int level, int remainCard)
+    public void SetTimeLimit(int level)
     {
-        this.remainCard = remainCard;
         timeLimit = 30f + (level * 10f);
     }
 
@@ -159,7 +163,7 @@ public class GameManager : MonoBehaviour
     public void Matched()
     {
         //두 카드가 같다면
-        if (isPlaying/*보호수준때문에 일단 bool 변수로 대체 firstCard.idx == secondCard.idx*/)
+        if (firstCard.key.Item1 == secondCard.key.Item1 && firstCard.key.Item2 == secondCard.key.Item2)
         {
             //성공 사운드클립
             audioSource.PlayOneShot(success);
@@ -173,11 +177,9 @@ public class GameManager : MonoBehaviour
         {
             //실패 사운드클립
             audioSource.PlayOneShot(failure);
-            /*
             //카드 다시 뒤집기
-            firstCard.ReflipCard();
-            secondCard.ReflipCard();
-            */
+            firstCard.CloseCard();
+            secondCard.CloseCard();
         }
         //첫번째, 두번째 카드 변수 null로 초기화
         firstCard = null;
@@ -185,16 +187,3 @@ public class GameManager : MonoBehaviour
     }
 }
 
-public class MemberSprite
-{
-    public Sprite[] cardset1;
-    public Sprite[] cardset2;
-    public Sprite[] cardset3;
-
-    public void Init(Sprite[] cardset1, Sprite[] cardset2, Sprite[] cardset3)
-    {
-        this.cardset1 = cardset1;
-        this.cardset2 = cardset2;
-        this.cardset3 = cardset3;
-    }
-}
