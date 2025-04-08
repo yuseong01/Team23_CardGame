@@ -11,13 +11,15 @@ public class CardPlacementController : MonoBehaviour
     private Queue<GameObject> cardObejctQue = new();
 
     [Space(10f)]
-    [SerializeField] Vector2 gridCellSpacing;
+    [SerializeField] Vector2 gridCellSpacing; // 카드간의 간격
+
 
     [Space(10f)]
     [SerializeField] GridLayoutGroup cardParentGrid;
     [SerializeField] RectTransform cardParentRectTransform;
 
     
+    //게임 시작시 카드배치, 인덱스 반환
     public int[] InitStartGame(int levelValue, int memberCount, GameObject cardPrefab)
     {
         var leveledColumnCount = defalutColumnCount + levelValue;
@@ -32,6 +34,8 @@ public class CardPlacementController : MonoBehaviour
         return GetCardRandCells(totalCardCount, memberCount);
     }
 
+
+    //게임 종료시 카드비활성화
     public void InitEndGame()
     {
         DisableCards();
