@@ -17,16 +17,19 @@ public class StageBtn : MonoBehaviour
                 StagImages.SetActive(false);
                 Debug.Log("TestStage1");
                 //스테이지 1
+
                 break;
             case 2:
                 StagImages.SetActive(false);
                 Debug.Log("TestStage2");
                 //스테이지 2
+
                 break;
             case 3:
                 StagImages.SetActive(false);
                 Debug.Log("TestStage3");
                 //스테이지 3
+
                 break;
         }
 
