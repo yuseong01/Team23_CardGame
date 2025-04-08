@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Image timeBar;
     [SerializeField] private int level = 0;
     [SerializeField] private int remainCard = 16;
+    [SerializeField] private Sprite[] members1;
+    [SerializeField] private Sprite[] members2;
+    [SerializeField] private Sprite[] members3;
 
     AudioSource audioSource;
     [SerializeField] private AudioClip success;
@@ -20,6 +24,8 @@ public class GameManager : MonoBehaviour
     //public GameObject endPanel;
     //public Card firstCard;
     //public Card secondCard;
+
+    private MemberSprite member;
 
     float time = 0.0f;
     float timeLimit;
@@ -37,6 +43,8 @@ public class GameManager : MonoBehaviour
         }
         //프레임조정
         Application.targetFrameRate = 60;
+        member = new MemberSprite();
+        member.Init(members1, members2, members3);
     }
 
     // Start is called before the first frame update
@@ -53,8 +61,9 @@ public class GameManager : MonoBehaviour
     public void StartGame(int level)
     {
         //카드 배치 로직
-        cardPlacementController.InitStartGame(level, 5, card);
-
+        /*
+        cardPlacementController.InitStartGame(level, member);
+        */
         time = 0.0f;
         Time.timeScale = 1.0f;
         timeBar.fillAmount = 0.0f;
@@ -144,5 +153,19 @@ public class GameManager : MonoBehaviour
         firstCard = null;
         secondCard = null;
         */
+    }
+}
+
+public class MemberSprite
+{
+    public Sprite[] cardset1;
+    public Sprite[] cardset2;
+    public Sprite[] cardset3;
+
+    public void Init(Sprite[] cardset1, Sprite[] cardset2, Sprite[] cardset3)
+    {
+        this.cardset1 = cardset1;
+        this.cardset2 = cardset2;
+        this.cardset3 = cardset3;
     }
 }
