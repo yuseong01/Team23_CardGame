@@ -1,15 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Cards : MonoBehaviour
 {
-    public GameObject front;
-    public GameObject back;
+    public Image frontImage;
+    public Image backImage;
 
     public Animator anim;
-    int idx;
 
+    public (int, int) key;
+
+    public int idx;
+
+    public void Init((int, int) key, Sprite targetSprite)
+    {
+        this.key = key;
+        backImage.sprite = targetSprite;
+    }
 
     public void Setting(int idx)
     {
@@ -21,7 +30,7 @@ public class Cards : MonoBehaviour
     public void OpenCard()
     {
         anim.SetBool("isOpen", true);
-        front.SetActive(true);
-        back.SetActive(false);
+        frontImage.gameObject.SetActive(true);
+        backImage.gameObject.SetActive(false);
     }
 }

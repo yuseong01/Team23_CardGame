@@ -2,34 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class StageBtn : MonoBehaviour
 {
-    public int diffcult = 0; //스테이지 난이도
-    public GameObject StagImages;
+    [SerializeField] Text stageText;
+    [SerializeField] Button button;
+    [SerializeField] int level;
 
-    public void Stage(int diffcult)
+    public void Init(int _level)
     {
-        diffcult = this.diffcult;
-        switch (diffcult)
-        {
-            case 1:
-                StagImages.SetActive(false);
-                Debug.Log("TestStage1");
-                //스테이지 1
-                break;
-            case 2:
-                StagImages.SetActive(false);
-                Debug.Log("TestStage2");
-                //스테이지 2
-                break;
-            case 3:
-                StagImages.SetActive(false);
-                Debug.Log("TestStage3");
-                //스테이지 3
-                break;
-        }
+        this.level = _level;
+        stageText.text = "Stage " + _level.ToString();
 
+        //게임매니저에서 처리
+
+        //if (GameManager.instance.clearedLevel <= _level)
+        //{
+        //    button.onClick.AddListener(() => StartStage(_level));
+        //}
+
+    }
+    public void StartStage(int _level)
+    {
+        //게임매니저
+        //GameManager.instance.StartGame(_level);
     }
 
 }
+
