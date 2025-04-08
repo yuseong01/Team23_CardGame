@@ -18,7 +18,8 @@ public class CardPlacementController : MonoBehaviour
     [SerializeField] GridLayoutGroup cardParentGrid;
     [SerializeField] RectTransform cardParentRectTransform;
 
-    
+
+    //게임 시작시 카드배치
     public List<Cards> StartCardPlacement(int levelValue, MemberSpritesContainer memberSpritesContainer, Cards cardPrefab)
     {
         var leveledColumnCount = defalutColumnCount + levelValue;
@@ -34,6 +35,20 @@ public class CardPlacementController : MonoBehaviour
 
         return InitCardTable(totalCardCount, cardKeyList, memberSpritesContainer, cardPrefab);
     }
+
+
+    //게임 종료시 카드비활성화
+    public void EndCardPalcement()
+    {
+        DisableCards();
+    }
+
+
+
+
+
+
+
 
     List<(int, int)> GetCardKeyList(int totalCardCount, MemberSpritesContainer memberSpritesContainer)
     {
@@ -88,12 +103,6 @@ public class CardPlacementController : MonoBehaviour
     }
 
 
-
-    //게임 종료시 카드비활성화
-    public void InitEndGame()
-    {
-        DisableCards();
-    }
 
 
 
