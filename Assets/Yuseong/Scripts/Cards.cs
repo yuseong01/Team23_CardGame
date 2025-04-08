@@ -8,6 +8,7 @@ public class NewBehaviourScript : MonoBehaviour
     public GameObject back;
 
     public Animator anim;
+    int idx;
 
     // Start is called before the first frame update
     void Start()

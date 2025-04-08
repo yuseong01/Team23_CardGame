@@ -6,22 +6,24 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
+    [SerializeField] private CardPlacementController cardPlacementController;
+    [SerializeField] private GameObject card;
     [SerializeField] private Color startColor;
     [SerializeField] private Image timeBar;
     [SerializeField] private int level = 0;
     [SerializeField] private int remainCard = 16;
 
     AudioSource audioSource;
-    public AudioClip success;
-    public AudioClip failure;
+    [SerializeField] private AudioClip success;
+    [SerializeField] private AudioClip failure;
 
     //public GameObject endPanel;
     //public Card firstCard;
     //public Card secondCard;
 
-    float time;
+    float time = 0.0f;
     float timeLimit;
+    bool isPlaying = false;
 
     private void Awake()
     {
@@ -33,45 +35,70 @@ public class GameManager : MonoBehaviour
         {
             Destroy(Instance);
         }
+        //프레임조정
+        Application.targetFrameRate = 60;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        //프레임조정
-        Application.targetFrameRate = 60;
-        
-        //카드 생성단계에서 레벨초기화 호출해줘야함 
-        SetTimeLimit(remainCard, level);
-        
 
-        time = 0.0f;
-        Time.timeScale = 1.0f;
-        timeBar.fillAmount = 0.0f;
     }
 
     void Update()
     {
-        //시간이 지나갈수록 타임바가 차오름
-        time += Time.deltaTime;
-        float progress = Mathf.Clamp01(time / timeLimit);
-        timeBar.fillAmount = progress;
+        
+    }
 
-        //타임바의 비율에 따라 타임바 색 조정
-        TimeBarColor(progress);
+    public void StartGame(int level)
+    {
+        //카드 배치 로직
+        cardPlacementController.InitStartGame(level, 5, card);
 
-        if (time >= timeLimit)
-        {
-            Time.timeScale = 0.0f;
-            //endPanel.SetActive(true);
-        }
+        time = 0.0f;
+        Time.timeScale = 1.0f;
+        timeBar.fillAmount = 0.0f;
+
+        SetTimeLimit(level);  // 레벨에 따라 timeLimit 설정
+
+        isPlaying = true;
+        StartCoroutine(TimeFlowCoroutine()); // 시간 흐름 시작
     }
 
     //레벨별 제한시간 설정
-    public void SetTimeLimit(int remainCard,  int level)
+    public void SetTimeLimit(int level)
     {
         this.remainCard = remainCard;
         timeLimit = 30f + (level * 10f);
+    }
+
+    private IEnumerator TimeFlowCoroutine()
+    {
+        while (isPlaying)
+        {
+            //시간이 지나갈수록 타임바가 차오름
+            time += Time.deltaTime;
+            float progress = Mathf.Clamp01(time / timeLimit);
+            timeBar.fillAmount = progress;
+            //타임바의 비율에 따라 타임바 색 조정
+            TimeBarColor(progress);
+
+            if (time >= timeLimit)
+            {
+                GameOver();
+                yield break; // 코루틴 종료
+            }
+
+            yield return null;
+        }
+    }
+
+    private void GameOver()
+    {
+        isPlaying = false;
+        Time.timeScale = 0.0f;
+
+        Debug.Log("게임 종료");
     }
 
     //타임바의 비율에 따라 타임바 색 조정
