@@ -30,7 +30,6 @@ public class CardPlacementController : MonoBehaviour
         SetCellSize(leveledColumnCount, cardPrefab.frontImage.rectTransform);
 
 
-
         List<(int, int)> cardKeyList = GetCardKeyList(totalCardCount, memberSpritesContainer);
 
         return InitCardTable(totalCardCount, cardKeyList, memberSpritesContainer, cardPrefab);

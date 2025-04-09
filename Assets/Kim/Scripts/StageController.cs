@@ -45,7 +45,6 @@ public class StageController : MonoBehaviour
     public void OnEndCardGame(int clearedLevel)
     {
         stageSelectUIGameObject.SetActive(true);
-
         UpdateButtonLockImage(clearedLevel);
     }
 }
