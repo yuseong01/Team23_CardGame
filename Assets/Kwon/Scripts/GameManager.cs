@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         //프레임조정
         Application.targetFrameRate = 60;
         //PlayerPrefs에 저장된게 있으면 clearedLevel 초기화
-        //if (PlayerPrefs.HasKey(levelkey)) { clearedLevel = PlayerPrefs.GetInt(levelkey); }
+        //if (PlayerPrefs.HasKey(levelkey)) {clearedLevel = PlayerPrefs.GetInt(levelkey);}
 
         memberSpritesContainer = new MemberSpritesContainer();
         memberSpritesContainer.Init(5);

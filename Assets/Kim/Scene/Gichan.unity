@@ -1406,6 +1406,7 @@ RectTransform:
   - {fileID: 331276293}
   - {fileID: 2027933185}
   - {fileID: 432926597}
+  - {fileID: 2126140576}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2674,7 +2675,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 794838077}
     m_Modifications:
     - target: {fileID: 824402652377721915, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
       propertyPath: StageBtnPrefabParents
@@ -2690,11 +2691,11 @@ PrefabInstance:
       objectReference: {fileID: 905195302}
     - target: {fileID: 897090953426926558, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -380
       objectReference: {fileID: 0}
     - target: {fileID: 897090953426926558, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -640
       objectReference: {fileID: 0}
     - target: {fileID: 897090953426926558, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2748,6 +2749,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b17742d2c5aafb48b97cf97e4cb69a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &2126140576 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 897090953426926558, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
+  m_PrefabInstance: {fileID: 2126140574}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2756,7 +2762,6 @@ SceneRoots:
   - {fileID: 1764963091}
   - {fileID: 547116614}
   - {fileID: 794838077}
-  - {fileID: 2126140574}
   - {fileID: 1895411300}
   - {fileID: 764393146}
   - {fileID: 1531869093}
