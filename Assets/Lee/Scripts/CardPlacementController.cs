@@ -17,25 +17,6 @@ public class CardPlacementController : MonoBehaviour
     [Space(10f)]
     [SerializeField] GridLayoutGroup cardParentGrid;
     [SerializeField] RectTransform cardParentRectTransform;
-    [SerializeField] GameObject touchBlockObject;
-
-
-    private void Awake()
-    {
-        touchBlockObject.gameObject.SetActive(false);
-
-        //그리드 패딩 스크린 비율로 설정
-        int padding = Mathf.RoundToInt(Screen.width * 0.05f);
-
-        cardParentGrid.padding = new()
-        {
-            top = padding * 2,
-            bottom = padding,
-            left = padding,
-            right = padding
-        };
-
-    }
 
 
 
@@ -65,7 +46,7 @@ public class CardPlacementController : MonoBehaviour
     {
         foreach (var item in placedCardList)
         {
-            item.CloseCardInvoke();
+            item.CloseCard();
             item.gameObject.SetActive(false);
         }
 
@@ -125,7 +106,7 @@ public class CardPlacementController : MonoBehaviour
 
     void SetCellSize(int leveledColumnCount ,Vector2 cardSize)
     {
-        float placeAreaHorizontal = Screen.width - cardParentGrid.padding.horizontal;
+        float placeAreaHorizontal = 1080 - cardParentGrid.padding.horizontal;
 
         float cellSizeX = (placeAreaHorizontal - cardParentGrid.spacing.x * leveledColumnCount) / leveledColumnCount;
 
@@ -137,7 +118,9 @@ public class CardPlacementController : MonoBehaviour
 
     IEnumerator AnimationPlaceCards(float placeAnimTime)
     {
-        touchBlockObject.gameObject.SetActive(true);
+        var gameManager = GameManager.instance;
+
+        gameManager.touchBlockPanel.enabled = true;
 
         float animSpeed = placeAnimTime / placedCardList.Count;
 
@@ -153,6 +136,8 @@ public class CardPlacementController : MonoBehaviour
             yield return new WaitForSeconds(animSpeed);
         }
 
-        touchBlockObject.gameObject.SetActive(false);
+        gameManager.touchBlockPanel.enabled = false;
+
+        StartCoroutine(gameManager.TimeFlowCoroutine());
     }
 }

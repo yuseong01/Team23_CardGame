@@ -672,6 +672,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1322749610239413622}
     - target: {fileID: 7733776080734736753, guid: 3ac58c9fde1fb97468545d8c0ad19f77, type: 3}
+      propertyPath: touchBlockPanel
+      value: 
+      objectReference: {fileID: 92492973}
+    - target: {fileID: 7733776080734736753, guid: 3ac58c9fde1fb97468545d8c0ad19f77, type: 3}
       propertyPath: stageBtnController
       value: 
       objectReference: {fileID: 1322749610239413622}
@@ -1427,6 +1431,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1317599246}
   m_CullTransparentMesh: 1
+--- !u!1 &1329246434 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2091475172191941534, guid: cf85b66d8167c684c848cd62e1d59585, type: 3}
+  m_PrefabInstance: {fileID: 1907632821}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1329246437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329246434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a9b4f150fab4452ba80f05aaa39096c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmAudioSource: {fileID: 0}
+  flipSoundAudioSource: {fileID: 0}
+  flipSuccessSoundClip: {fileID: 0}
+  flipFailSoundClip: {fileID: 0}
+  gameBGMClip: {fileID: 0}
 --- !u!1001 &1411541336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1752,7 +1778,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2091475172191941534, guid: cf85b66d8167c684c848cd62e1d59585, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1329246437}
   m_SourcePrefab: {fileID: 100100000, guid: cf85b66d8167c684c848cd62e1d59585, type: 3}
 --- !u!1 &2026815401
 GameObject:
@@ -2760,7 +2789,7 @@ MonoBehaviour:
   m_StartCorner: 2
   m_StartAxis: 0
   m_CellSize: {x: 0, y: 0}
-  m_Spacing: {x: 10, y: 10}
+  m_Spacing: {x: 20, y: 20}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!114 &5861818635764841140

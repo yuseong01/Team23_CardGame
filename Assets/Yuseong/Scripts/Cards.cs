@@ -13,6 +13,7 @@ public class Cards : MonoBehaviour
 
     public Image frontImage;
     public Image backImage;
+    public Image selectImage;
 
     public Button backObjectButton;
 
@@ -38,23 +39,23 @@ public class Cards : MonoBehaviour
         frontImage.gameObject.SetActive(true);
         backImage.gameObject.SetActive(false);
 
-        if(GameManager.instance.firstCard == null)
+        selectImage.gameObject.SetActive(true);
+
+
+        if (GameManager.instance.firstCard == null)
         {
             GameManager.instance.firstCard = this;
         }
         else
         {
             GameManager.instance.secondCard = this;
-            GameManager.instance.Matched();
+
+            StartCoroutine(GameManager.instance.CardMatched());
         }
     }
 
-    public void CloseCard()
-    {
-        Invoke(nameof(CloseCardInvoke), 0.5f);
-    }
 
-    public void CloseCardInvoke()
+    public void CloseCard()
     {
         anim.SetBool("isOpen", false);
 
@@ -63,7 +64,16 @@ public class Cards : MonoBehaviour
 
         frontImage.gameObject.SetActive(false);
         backImage.gameObject.SetActive(true);
+
+        selectImage.gameObject.SetActive(false);
     }
+
+
+    public void OnSuccess()
+    {
+        selectImage.gameObject.SetActive(false);
+    }
+
 }
 
 

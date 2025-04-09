@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager_yuseong : MonoBehaviour
+public class SoundManager : MonoBehaviour
 {
     [SerializeField] AudioSource bgmAudioSource;
     [SerializeField] AudioSource flipSoundAudioSource;
@@ -17,12 +17,12 @@ public class SoundManager_yuseong : MonoBehaviour
         bgmAudioSource.clip = gameBGMClip;
         bgmAudioSource.Play();
     }
-    public void FlipSuccessSound()  //나중에는 clip을 매개변수로 받아와서 함수를 하나만 만들어도 됨
+    public void PlayFlipSuccessSound()  //나중에는 clip을 매개변수로 받아와서 함수를 하나만 만들어도 됨
     {
         flipSoundAudioSource.clip = flipSuccessSoundClip;
         flipSoundAudioSource.Play();
     }
-    public void FlipFailSound()
+    public void PlayFlipFailSound()
     {
         flipSoundAudioSource.clip = flipFailSoundClip;
         flipSoundAudioSource.Play();
