@@ -8,23 +8,35 @@ public class CardPlacementController : MonoBehaviour
 {
     private int defalutColumnCount = 3;
 
+    private List<(int, int)> cardKeyList = new();
     private List<Cards> placedCardList = new();
 
-
     [Space(10f)]
-    [SerializeField] Vector2 gridCellSpacing; // 카드간의 간격
-    [SerializeField] float placeAnimationTime; // 카드간의 간격
-
+    [SerializeField] float placeAnimationTime; // 카드 배치 애니메이션 시간
 
     [Space(10f)]
     [SerializeField] GridLayoutGroup cardParentGrid;
     [SerializeField] RectTransform cardParentRectTransform;
+    [SerializeField] GameObject touchBlockObject;
 
-    Vector2 cacheScreenSize;
+
     private void Awake()
     {
-        cacheScreenSize = new(Screen.width, Screen.height);
+        touchBlockObject.gameObject.SetActive(false);
+
+        //그리드 패딩 스크린 비율로 설정
+        int padding = Mathf.RoundToInt(Screen.width * 0.05f);
+
+        cardParentGrid.padding = new()
+        {
+            top = padding * 2,
+            bottom = padding,
+            left = padding,
+            right = padding
+        };
+
     }
+
 
 
     //게임 시작시 카드배치
@@ -35,12 +47,12 @@ public class CardPlacementController : MonoBehaviour
         var totalCardCount = leveledColumnCount * (leveledColumnCount - 1);
 
 
-        SetCellSize(leveledColumnCount, cardPrefab.GetComponent<RectTransform>());
+        SetCellSize(leveledColumnCount, cardPrefab.size);
 
+        SetCardKeyList(totalCardCount, memberSpritesContainer);
 
-        List<(int, int)> cardKeyList = GetCardKeyList(totalCardCount, memberSpritesContainer);
-        
-        InitCardTable(totalCardCount, cardKeyList, memberSpritesContainer, cardPrefab);
+        SetCardTable(totalCardCount, memberSpritesContainer, cardPrefab);
+
 
         StartCoroutine(AnimationPlaceCards(placeAnimationTime));
 
@@ -48,7 +60,7 @@ public class CardPlacementController : MonoBehaviour
     }
 
 
-    //게임 종료시 카드비활성화
+    //게임 종료시 초기화
     public void EndCardPalcement()
     {
         foreach (var item in placedCardList)
@@ -58,43 +70,39 @@ public class CardPlacementController : MonoBehaviour
         }
 
         placedCardList.Clear();
+        cardKeyList.Clear();
     }
 
 
 
 
-
-
-
-    List<(int, int)> GetCardKeyList(int totalCardCount, MemberSpritesContainer memberSpritesContainer)
+    void SetCardKeyList(int totalCardCount, MemberSpritesContainer memberSpritesContainer)
     {
-        int memberIndex = 0;
+        int item2Index = 0;
 
         int pairCount = 2;
 
-        List<(int, int)> cardKeyList = new();
-
         for (int i = 0; i < totalCardCount; i += pairCount)
         {
-            if (memberIndex % memberSpritesContainer.totalMemberCount == 0)
+            if (item2Index % memberSpritesContainer.totalMemberCount == 0)
             {
-                memberIndex = 0;
+                item2Index = 0;
             }
 
             int randCategoryNum = Random.Range(0, memberSpritesContainer.CategoryCount);
 
             for (int j = 0; j < pairCount; j++)
             {
-                cardKeyList.Add(new(randCategoryNum, memberIndex));
+                cardKeyList.Add(new(randCategoryNum, item2Index));
             }
 
-            memberIndex++;
+            item2Index++;
         }
 
-        return cardKeyList.OrderBy(x=> Random.value).ToList();
+        cardKeyList = cardKeyList.OrderBy(x=> Random.value).ToList();
     }
 
-    void InitCardTable(int totalCardCount, List<(int,int)> cardKeyList, MemberSpritesContainer memberSpritesContainer, Cards cardPrefab)
+    void SetCardTable(int totalCardCount, MemberSpritesContainer memberSpritesContainer, Cards cardPrefab)
     {
         var memberSpriteList = memberSpritesContainer.spritesList;
 
@@ -115,19 +123,22 @@ public class CardPlacementController : MonoBehaviour
 
 
 
-    void SetCellSize(int leveledColumnCount ,RectTransform targetRect)
+    void SetCellSize(int leveledColumnCount ,Vector2 cardSize)
     {
-        float cellSizeX = (cacheScreenSize.x - gridCellSpacing.x * leveledColumnCount) / leveledColumnCount;
+        float placeAreaHorizontal = Screen.width - cardParentGrid.padding.horizontal;
 
-        float cellSizeY = cellSizeX * (targetRect.sizeDelta.y / targetRect.sizeDelta.x);
+        float cellSizeX = (placeAreaHorizontal - cardParentGrid.spacing.x * leveledColumnCount) / leveledColumnCount;
 
-        cardParentGrid.cellSize = new Vector2(cellSizeX, cellSizeY);
+        float cellSizeY = cellSizeX * (cardSize.y / cardSize.x);
 
-        cardParentGrid.spacing = gridCellSpacing;
+        cardParentGrid.cellSize = new(cellSizeX, cellSizeY);
     }
+
 
     IEnumerator AnimationPlaceCards(float placeAnimTime)
     {
+        touchBlockObject.gameObject.SetActive(true);
+
         float animSpeed = placeAnimTime / placedCardList.Count;
 
         foreach (var item in placedCardList)
@@ -141,5 +152,7 @@ public class CardPlacementController : MonoBehaviour
 
             yield return new WaitForSeconds(animSpeed);
         }
+
+        touchBlockObject.gameObject.SetActive(false);
     }
 }

@@ -5,26 +5,30 @@ using UnityEngine.UI;
 
 public class Cards : MonoBehaviour
 {
+    public (int, int) key;
+
+    public Vector2 size;
+
     public RectTransform rectTransform;
 
     public Image frontImage;
+    public Image backImage;
 
-    public Button backImageButton;
+    public Button backObjectButton;
 
     public Animator anim;
 
-    public (int, int) key;
 
     private void Awake()
     {
-        backImageButton.onClick.AddListener(OpenCard);
+        backObjectButton.onClick.AddListener(OpenCard);
     }
 
-    public void Init((int, int) key, Sprite targetSprite)
+    public void Init((int, int) key, Sprite memberSprite)
     {
         this.key = key;
 
-        frontImage.sprite = targetSprite;
+        frontImage.sprite = memberSprite;
     }
 
     public void OpenCard()
@@ -32,7 +36,7 @@ public class Cards : MonoBehaviour
         anim.SetBool("isOpen", true);
 
         frontImage.gameObject.SetActive(true);
-        backImageButton.gameObject.SetActive(false);
+        backImage.gameObject.SetActive(false);
 
         if(GameManager.instance.firstCard == null)
         {
@@ -48,7 +52,6 @@ public class Cards : MonoBehaviour
     public void CloseCard()
     {
         Invoke(nameof(CloseCardInvoke), 0.5f);
-
     }
 
     public void CloseCardInvoke()
@@ -59,7 +62,7 @@ public class Cards : MonoBehaviour
 
 
         frontImage.gameObject.SetActive(false);
-        backImageButton.gameObject.SetActive(true);
+        backImage.gameObject.SetActive(true);
     }
 }
 
