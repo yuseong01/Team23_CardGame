@@ -135,6 +135,8 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
+        cardPlacementController.EndCardPalcement();
+
         if(remainCard == 0)
         {
             //¼º°ø½Ã

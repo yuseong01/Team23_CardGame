@@ -8,7 +8,7 @@ public class CardPlacementController : MonoBehaviour
 {
     private int defalutColumnCount = 3;
 
-    private Queue<GameObject> cardObejctQue = new();
+    private Queue<Cards> cardObejctQue = new();
 
     [Space(10f)]
     [SerializeField] Vector2 gridCellSpacing; // 카드간의 간격
@@ -17,6 +17,12 @@ public class CardPlacementController : MonoBehaviour
     [Space(10f)]
     [SerializeField] GridLayoutGroup cardParentGrid;
     [SerializeField] RectTransform cardParentRectTransform;
+
+    Vector2 cacheScreenSize;
+    private void Awake()
+    {
+        cacheScreenSize = new(Screen.width, Screen.height);
+    }
 
 
     //게임 시작시 카드배치
@@ -27,7 +33,7 @@ public class CardPlacementController : MonoBehaviour
         var totalCardCount = leveledColumnCount * (leveledColumnCount - 1);
 
 
-        SetCellSize(leveledColumnCount, cardPrefab.frontImage.rectTransform);
+        SetCellSize(leveledColumnCount, cardPrefab.GetComponent<RectTransform>());
 
 
 
@@ -40,9 +46,15 @@ public class CardPlacementController : MonoBehaviour
     //게임 종료시 카드비활성화
     public void EndCardPalcement()
     {
-        DisableCards();
-    }
+        while (cardObejctQue.Count > 0)
+        {
+            var targetCard = cardObejctQue.Dequeue();
 
+            targetCard.CloseCardInvoke(); 
+
+            targetCard.gameObject.SetActive(false);
+        }
+    }
 
 
 
@@ -90,7 +102,7 @@ public class CardPlacementController : MonoBehaviour
                Instantiate(cardPrefab, cardParentRectTransform) :
                cardParentRectTransform.GetChild(i).GetComponent<Cards>();
 
-            cardObejctQue.Enqueue(targetCard.gameObject);
+            cardObejctQue.Enqueue(targetCard);
 
             targetCard.gameObject.SetActive(true);
 
@@ -108,7 +120,7 @@ public class CardPlacementController : MonoBehaviour
 
     void SetCellSize(int leveledColumnCount ,RectTransform targetRect)
     {
-        float cellSizeX = (cardParentRectTransform.sizeDelta.x - gridCellSpacing.x * leveledColumnCount) / leveledColumnCount;
+        float cellSizeX = (cacheScreenSize.x - gridCellSpacing.x * leveledColumnCount) / leveledColumnCount;
 
         float cellSizeY = cellSizeX * (targetRect.sizeDelta.y / targetRect.sizeDelta.x);
 
@@ -117,12 +129,5 @@ public class CardPlacementController : MonoBehaviour
         cardParentGrid.spacing = gridCellSpacing;
     }
 
-    void DisableCards()
-    {
-        while (cardObejctQue.Count > 0)
-        {
-            cardObejctQue.Dequeue().SetActive(false);
-        }
-    }
-
+   
 }
