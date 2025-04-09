@@ -7,17 +7,21 @@ using UnityEngine.UI;
 // 게임 끝났을 때 UI
 public class EndGameUI : MonoBehaviour
 {
-    public string[] names; // 이름들..
-    public GameObject endUI; // 게임 종료 시 나오는 UI;
-    public Text titleTxt; // CLEAR , FAIL
-    public Text timerTxt; // 클리어 시간 Text
-    Coroutine changeProfileCoroutine = null;
-    public Profile profile;
-    public Button retryButton;
+    [Header("UI")]
+    [Space(20)]
+    [SerializeField] private GameObject endUI; // 게임 종료 시 나오는 UI;
+    [SerializeField] private Profile profile; // 프로필(이미지, 이름)
+    [SerializeField] private Text titleTxt; // CLEAR , FAIL
+    [SerializeField] private Text timerTxt; // 클리어 시간 Text
+    [SerializeField] private Button goToMainButton; // main으로
+    [SerializeField] private string[] names; // 이름들..
+    [SerializeField] private float profileChangeInterval; // 프로필이 변경되는 시간
+
+    private Coroutine changeProfileCoroutine = null; // 프로필 변경 Coroutine
 
     public void Awake()
     {
-        retryButton.onClick.AddListener(RetryGame);
+        goToMainButton.onClick.AddListener(RetryGame);
 
         endUI.gameObject.SetActive(false);
     }
@@ -27,6 +31,7 @@ public class EndGameUI : MonoBehaviour
     {
         titleTxt.text = "CLEAR";
         timerTxt.text = score.ToString("N2");
+        profile.SetProfile(0, names[0]); // 처음 이미지를 하나 세팅
         endUI.SetActive(true);
         ChangeProfileLoop();
     }
@@ -54,8 +59,8 @@ public class EndGameUI : MonoBehaviour
         {
             if (i == names.Length) i = 0;
 
-            yield return new WaitForSeconds(2f); // 2초마다 변경
-            
+            yield return new WaitForSeconds(profileChangeInterval); // n초마다 변경
+
             profile.SetProfile(i, names[i]);
 
             i++;
