@@ -13,14 +13,13 @@ public class GameManager : MonoBehaviour
     private string levelkey = "LEVEL";
 
     private MemberSpritesContainer memberSpritesContainer;
-    //private AudioSource audioSource;
 
     [SerializeField] private EndGameUI endCardGameUI;
     [SerializeField] private CardPlacementController cardPlacementController;
     [SerializeField] private StageController stageController;
+    [SerializeField] private SoundManager soundManager;
     [SerializeField] private Cards card;
     [SerializeField] private Image timeBar;
-    [SerializeField] private GameObject matchEffect;
     [SerializeField] private Color startColor;
     [SerializeField] private int level = 0;
     [SerializeField] private int remainCard = 16;
@@ -28,8 +27,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Sprite[] members1;
     [SerializeField] private Sprite[] members2;
     [SerializeField] private Sprite[] members3;
-    //[SerializeField] private AudioClip success;
-    //[SerializeField] private AudioClip failure;
 
     [Space(10f)]
     public GameObject endPanel;
@@ -179,7 +176,8 @@ public class GameManager : MonoBehaviour
         if (firstCard.key.Item1 == secondCard.key.Item1 && firstCard.key.Item2 == secondCard.key.Item2)
         {
             //성공 사운드클립
-            //audioSource.PlayOneShot(success);
+            //soundManager.FlipSuccessSound();
+
             //카드는 앞면으로 놔둠, 정답이펙트
             ShowMatchEffect(firstCard);
             ShowMatchEffect(secondCard);
@@ -191,7 +189,7 @@ public class GameManager : MonoBehaviour
         else
         {
             //실패 사운드클립
-            //audioSource.PlayOneShot(failure);
+            //soundManager.FlipFailSound();
 
             //카드 다시 뒤집기
             firstCard.CloseCard();
@@ -204,8 +202,10 @@ public class GameManager : MonoBehaviour
     
     private void ShowMatchEffect(Cards card)
     {
-        GameObject effect = Instantiate(matchEffect, card.transform);
-        effect.transform.localPosition = Vector3.zero;
+        if (SparkleObjectPoolManager.instance != null)
+        {
+            GameObject sparkle = SparkleObjectPoolManager.instance.GetObject(card.transform.position);
+        }
     }
     
     public void SetNewStageSetting()
