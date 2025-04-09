@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -14,32 +13,30 @@ public class GameManager : MonoBehaviour
     private string levelkey = "LEVEL";
 
     private MemberSpritesContainer memberSpritesContainer;
-    private AudioSource audioSource;
+    //private AudioSource audioSource;
 
     [SerializeField] private EndGameUI endCardGameUI;
     [SerializeField] private CardPlacementController cardPlacementController;
     [SerializeField] private StageController stageController;
     [SerializeField] private Cards card;
-    [SerializeField] private Color startColor;
     [SerializeField] private Image timeBar;
+    [SerializeField] private GameObject matchEffect;
+    [SerializeField] private Color startColor;
     [SerializeField] private int level = 0;
     [SerializeField] private int remainCard = 16;
     [SerializeField] private Sprite[] stageIconSprites;
     [SerializeField] private Sprite[] members1;
     [SerializeField] private Sprite[] members2;
     [SerializeField] private Sprite[] members3;
-
-    [SerializeField] private AudioClip success;
-    [SerializeField] private AudioClip failure;
+    //[SerializeField] private AudioClip success;
+    //[SerializeField] private AudioClip failure;
 
     [Space(10f)]
     public GameObject endPanel;
     public Cards firstCard;
     public Cards secondCard;
     public int clearedLevel = 0;
-
     public int maxStageLevel;
-
     public bool isTouchStartScreen;
   
 
@@ -54,8 +51,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(instance);
         }
-
-        audioSource = GetComponent<AudioSource>();
+        //audioSource = GetComponent<AudioSource>();
 
         //프레임조정
         Application.targetFrameRate = 60;
@@ -76,9 +72,6 @@ public class GameManager : MonoBehaviour
         stageController.UpdateButtonLockImage(clearedLevel);
     }
 
-
-
-
     //버튼에서 작동시킬때
     //GameManager.instance.StartGame(level);
     public void StartCardGame(int level)
@@ -93,10 +86,10 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1.0f;
         timeBar.fillAmount = 0.0f;
 
-        SetTimeLimit(level);  // 레벨에 따라 timeLimit 설정
+        SetTimeLimit(level);    // 레벨에 따라 timeLimit 설정
 
         isPlaying = true;
-        StartCoroutine(TimeFlowCoroutine()); // 시간 흐름 시작
+        StartCoroutine(TimeFlowCoroutine());    // 시간 흐름 시작
 
         stageController.OnStartCardGame();
     }
@@ -104,7 +97,7 @@ public class GameManager : MonoBehaviour
     //레벨별 제한시간 설정
     public void SetTimeLimit(int level)
     {
-        timeLimit = 30f + (level * 10f);
+        timeLimit = 20f + (level * 10f);
     }
 
     private IEnumerator TimeFlowCoroutine()
@@ -118,9 +111,15 @@ public class GameManager : MonoBehaviour
             //타임바의 비율에 따라 타임바 색 조정
             TimeBarColor(progress);
 
+            //테스트용 성공 커맨드
             if(Input.GetKeyDown(KeyCode.D))
             {
                 remainCard = 0;
+            }
+            //테스트용 실패 커맨드
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                time = timeLimit;
             }
 
             if ((progress == 0) || (remainCard == 0))
@@ -128,7 +127,6 @@ public class GameManager : MonoBehaviour
                 GameOver();
                 yield break; // 코루틴 종료
             }
-
             yield return null;
         }
     }
@@ -137,27 +135,22 @@ public class GameManager : MonoBehaviour
     {
         if(remainCard == 0)
         {
-            //성공시
-            //성공UI출력******************************************************************
-
-            //레벨 갱신, PlayerPrefs에 저장
+            //성공시 레벨 갱신, PlayerPrefs에 저장
             if (clearedLevel < level)
             {
                 clearedLevel = level;
                 //PlayerPrefs.SetInt(levelkey, clearedLevel);
             }
-
             endCardGameUI.OpenWinUI(time);
         }
         else
         {
             //실패시
-            //실패UI출력******************************************************************
-
             endCardGameUI.OpenFailUI();
         }
         isPlaying = false;
 
+        cardPlacementController.EndCardPalcement();
         Debug.Log("게임 종료");
     }
 
@@ -184,8 +177,10 @@ public class GameManager : MonoBehaviour
         if (firstCard.key.Item1 == secondCard.key.Item1 && firstCard.key.Item2 == secondCard.key.Item2)
         {
             //성공 사운드클립
-            audioSource.PlayOneShot(success);
-            //카드는 앞면으로 놔둠 / 별도의 정답이펙트?
+            //audioSource.PlayOneShot(success);
+            //카드는 앞면으로 놔둠, 정답이펙트
+            ShowMatchEffect(firstCard);
+            ShowMatchEffect(secondCard);
 
             //남은 카드 수 감소
             remainCard -= 2;
@@ -194,7 +189,8 @@ public class GameManager : MonoBehaviour
         else
         {
             //실패 사운드클립
-            audioSource.PlayOneShot(failure);
+            //audioSource.PlayOneShot(failure);
+
             //카드 다시 뒤집기
             firstCard.CloseCard();
             secondCard.CloseCard();
@@ -203,7 +199,13 @@ public class GameManager : MonoBehaviour
         firstCard = null;
         secondCard = null;
     }
-
+    
+    private void ShowMatchEffect(Cards card)
+    {
+        GameObject effect = Instantiate(matchEffect, card.transform);
+        effect.transform.localPosition = Vector3.zero;
+    }
+    
     public void SetNewStageSetting()
     {
         endCardGameUI.gameObject.SetActive(false);
