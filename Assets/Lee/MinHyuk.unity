@@ -1032,6 +1032,10 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1602229197244733474, guid: 83a8ff22648583f4d85a0a859655070a, type: 3}
+      propertyPath: placeAnimationTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1602229197244733474, guid: 83a8ff22648583f4d85a0a859655070a, type: 3}
       propertyPath: cardParentRectTransform
       value: 
       objectReference: {fileID: 1460067113311800407}
