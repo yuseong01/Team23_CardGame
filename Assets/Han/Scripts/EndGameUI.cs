@@ -13,20 +13,22 @@ public class EndGameUI : MonoBehaviour
     public Text timerTxt; // 클리어 시간 Text
     Coroutine changeProfileCoroutine = null;
     public Profile profile;
+    public Button retryButton;
 
     public void Awake()
     {
-        // GameManager.Instance.endGameUI = this;
-        endUI.SetActive(false);
+        retryButton.onClick.AddListener(RetryGame);
+
+        endUI.gameObject.SetActive(false);
     }
 
     // 성공 했을 때 UI
     public void OpenWinUI(float score)
     {
         titleTxt.text = "CLEAR";
-        ChangeProfileLoop();
         timerTxt.text = score.ToString("N2");
         endUI.SetActive(true);
+        ChangeProfileLoop();
     }
 
     // 실패 했을 때 UI
@@ -51,8 +53,11 @@ public class EndGameUI : MonoBehaviour
         while (true)
         {
             if (i == names.Length) i = 0;
+
             yield return new WaitForSeconds(2f); // 2초마다 변경
+            
             profile.SetProfile(i, names[i]);
+
             i++;
         }
     }
@@ -64,6 +69,8 @@ public class EndGameUI : MonoBehaviour
         {
             StopCoroutine(changeProfileCoroutine);
         }
-        SceneManager.LoadScene("MainScene");
+        //SceneManager.LoadScene("MainScene");
+
+        GameManager.instance.SetNewStageSetting();
     }
 }

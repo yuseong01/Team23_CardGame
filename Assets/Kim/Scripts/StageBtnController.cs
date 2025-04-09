@@ -2,19 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageBtnController : MonoBehaviour
+public class StageController : MonoBehaviour
 {
+    [SerializeField] private GameObject stageSelectUIGameObject;
     [SerializeField] private Transform StageBtnPrefabParents;
-    [SerializeField] private  StageBtn StageBtnPrefab;
+    [SerializeField] private StageBtn StageBtnPrefab;
 
-    int levelText = 1;
+    List<StageBtn> stageBtnList;
 
-    public void StageButtonCreate(int stageCount)
+    public void StageButtonCreate(Sprite[] memberIconsArray)
     {
-        for(int i = 0; i < stageCount; i++)
+        stageBtnList = new();
+
+        int totalStageCount = memberIconsArray.Length;
+
+        for (int i = 0; i < totalStageCount; i++)
         {
-            Instantiate(StageBtnPrefab, StageBtnPrefabParents).Init(levelText);
-            levelText++;
+            StageBtn newBtn = Instantiate(StageBtnPrefab, StageBtnPrefabParents);
+
+            newBtn.Init(i + 1, memberIconsArray[i]);
+
+            stageBtnList.Add(newBtn);
         }
+    }
+
+    public void UpdateButtonLockImage(int clearedLevel)
+    {
+        for (int i = 0; i < stageBtnList.Count; i++)
+        {
+            if(i <= clearedLevel)
+            {
+                stageBtnList[i].lockImageGameObject.SetActive(false);
+            }
+        }
+    }
+
+    public void OnStartCardGame()
+    {
+        stageSelectUIGameObject.SetActive(false);
+    }
+
+    public void OnEndCardGame(int clearedLevel)
+    {
+        stageSelectUIGameObject.SetActive(true);
+
+        UpdateButtonLockImage(clearedLevel);
     }
 }

@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class Cards : MonoBehaviour
 {
     public Image frontImage;
-    public Image backImage;
+
+    public Button backImageButton;
 
     public Animator anim;
 
@@ -15,14 +16,17 @@ public class Cards : MonoBehaviour
     public void Init((int, int) key, Sprite targetSprite)
     {
         this.key = key;
-        backImage.sprite = targetSprite;
+
+        frontImage.sprite = targetSprite;
+
+        backImageButton.onClick.AddListener(OpenCard);
     }
 
     public void OpenCard()
     {
         anim.SetBool("isOpen", true);
         frontImage.gameObject.SetActive(true);
-        backImage.gameObject.SetActive(false);
+        backImageButton.gameObject.SetActive(false);
         if(GameManager.instance.firstCard == null)
         {
             GameManager.instance.firstCard = this;
@@ -43,6 +47,6 @@ public class Cards : MonoBehaviour
     {
         anim.SetBool("isOpen", false);
         frontImage.gameObject.SetActive(false);
-        backImage.gameObject.SetActive(true);
+        backImageButton.gameObject.SetActive(true);
     }
 }

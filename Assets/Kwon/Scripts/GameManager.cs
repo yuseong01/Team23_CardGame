@@ -8,31 +8,41 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    private float time = 0.0f;
+    private float timeLimit;
+    private bool isPlaying = false;
+    private string levelkey = "LEVEL";
+
+    private MemberSpritesContainer memberSpritesContainer;
+    private AudioSource audioSource;
+
+    [SerializeField] private EndGameUI endCardGameUI;
     [SerializeField] private CardPlacementController cardPlacementController;
+    [SerializeField] private StageController stageController;
     [SerializeField] private Cards card;
     [SerializeField] private Color startColor;
     [SerializeField] private Image timeBar;
     [SerializeField] private int level = 0;
     [SerializeField] private int remainCard = 16;
+    [SerializeField] private Sprite[] stageIconSprites;
     [SerializeField] private Sprite[] members1;
     [SerializeField] private Sprite[] members2;
     [SerializeField] private Sprite[] members3;
 
-    AudioSource audioSource;
     [SerializeField] private AudioClip success;
     [SerializeField] private AudioClip failure;
 
+    [Space(10f)]
     public GameObject endPanel;
     public Cards firstCard;
     public Cards secondCard;
     public int clearedLevel = 0;
 
-    private MemberSpritesContainer memberSpritesContainer;
+    public int maxStageLevel;
 
-    float time = 0.0f;
-    float timeLimit;
-    bool isPlaying = false;
-    string levelkey = "LEVEL";
+    public bool isTouchStartScreen;
+  
+
 
     private void Awake()
     {
@@ -50,7 +60,7 @@ public class GameManager : MonoBehaviour
         //프레임조정
         Application.targetFrameRate = 60;
         //PlayerPrefs에 저장된게 있으면 clearedLevel 초기화
-        if (PlayerPrefs.HasKey(levelkey)) { clearedLevel = PlayerPrefs.GetInt(levelkey); }
+        //if (PlayerPrefs.HasKey(levelkey)) { clearedLevel = PlayerPrefs.GetInt(levelkey); }
 
         memberSpritesContainer = new MemberSpritesContainer();
         memberSpritesContainer.Init(5);
@@ -59,22 +69,22 @@ public class GameManager : MonoBehaviour
         memberSpritesContainer.AddSprites(members3);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
+        stageController.StageButtonCreate(stageIconSprites);
 
+        stageController.UpdateButtonLockImage(clearedLevel);
     }
 
-    void Update()
-    {
-        
-    }
+
 
 
     //버튼에서 작동시킬때
     //GameManager.instance.StartGame(level);
-    public void StartGame(int level)
+    public void StartCardGame(int level)
     {
+        this.level = level;
+
         //카드 배치 로직
         List<Cards> remain = cardPlacementController.StartCardPlacement(level, memberSpritesContainer, card);
         remainCard = remain.Count;
@@ -88,7 +98,7 @@ public class GameManager : MonoBehaviour
         isPlaying = true;
         StartCoroutine(TimeFlowCoroutine()); // 시간 흐름 시작
 
-        
+        stageController.OnStartCardGame();
     }
 
     //레벨별 제한시간 설정
@@ -107,6 +117,11 @@ public class GameManager : MonoBehaviour
             timeBar.fillAmount = progress;
             //타임바의 비율에 따라 타임바 색 조정
             TimeBarColor(progress);
+
+            if(Input.GetKeyDown(KeyCode.D))
+            {
+                remainCard = 0;
+            }
 
             if ((progress == 0) || (remainCard == 0))
             {
@@ -129,16 +144,19 @@ public class GameManager : MonoBehaviour
             if (clearedLevel < level)
             {
                 clearedLevel = level;
-                PlayerPrefs.SetInt(levelkey, clearedLevel);
+                //PlayerPrefs.SetInt(levelkey, clearedLevel);
             }
+
+            endCardGameUI.OpenWinUI(time);
         }
         else
         {
             //실패시
             //실패UI출력******************************************************************
+
+            endCardGameUI.OpenFailUI();
         }
         isPlaying = false;
-        Time.timeScale = 0.0f;
 
         Debug.Log("게임 종료");
     }
@@ -184,6 +202,13 @@ public class GameManager : MonoBehaviour
         //첫번째, 두번째 카드 변수 null로 초기화
         firstCard = null;
         secondCard = null;
+    }
+
+    public void SetNewStageSetting()
+    {
+        endCardGameUI.gameObject.SetActive(false);
+
+        stageController.OnEndCardGame(clearedLevel);
     }
 }
 

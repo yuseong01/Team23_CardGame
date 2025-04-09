@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class StageBtnTest : MonoBehaviour
 {
-    [SerializeField] StageBtnController stageBtnController;
+    [SerializeField] StageController stageBtnController;
     [SerializeField] int stageCount;
     void Start()
     {
-        stageBtnController.StageButtonCreate(stageCount);
+        //stageBtnController.StageButtonCreate(stageCount);
     }
 }
