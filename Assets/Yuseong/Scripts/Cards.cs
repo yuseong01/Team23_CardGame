@@ -7,6 +7,8 @@ public class Cards : MonoBehaviour
 {
     public (int, int) key;
 
+    public bool isOpen;
+
     public Vector2 size;
 
     public RectTransform rectTransform;
@@ -22,22 +24,19 @@ public class Cards : MonoBehaviour
 
     private void Awake()
     {
-        backObjectButton.onClick.AddListener(OpenCard);
+        backObjectButton.onClick.AddListener(OnSelectCard);
     }
 
-    public void Init((int, int) key, Sprite memberSprite)
+    public void Init((int, int) key, MemberSpritesContainer memberSpriteContainer)
     {
         this.key = key;
 
-        frontImage.sprite = memberSprite;
+        frontImage.sprite = memberSpriteContainer.spritesList[key.Item1][key.Item2];
     }
 
-    public void OpenCard()
+    public void OnSelectCard()
     {
-        anim.SetBool("isPop", true);
-
-        frontImage.gameObject.SetActive(true);
-        backImage.gameObject.SetActive(false);
+        OpenCard();
 
         selectImage.gameObject.SetActive(true);
 
@@ -52,26 +51,41 @@ public class Cards : MonoBehaviour
 
             StartCoroutine(CardGameController.instance.CardMatched());
         }
+
+        SoundManager.instance.PlayTouchCardSound();
     }
 
+    public void OpenCard()
+    {
+        anim.SetTrigger("PopTrigger");
+
+        frontImage.gameObject.SetActive(true);
+        backImage.gameObject.SetActive(false);
+
+        SoundManager.instance.PlaySetCardSound();
+        isOpen = true;
+    }
 
     public void CloseCard()
     {
-        anim.SetBool("isPop", false);
+        anim.SetTrigger("PopTrigger");
 
         rectTransform.localScale = Vector2.one;
-
 
         frontImage.gameObject.SetActive(false);
         backImage.gameObject.SetActive(true);
 
         selectImage.gameObject.SetActive(false);
+
+        SoundManager.instance.PlaySetCardSound();
+
+        isOpen = false;
     }
 
 
     public void OnSuccess()
     {
-        anim.SetBool("isPop", false);
+        anim.SetTrigger("PopTrigger");
 
         selectImage.gameObject.SetActive(false);
     }

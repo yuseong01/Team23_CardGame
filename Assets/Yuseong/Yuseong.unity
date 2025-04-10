@@ -136,11 +136,19 @@ PrefabInstance:
       value: SoundManager
       objectReference: {fileID: 0}
     - target: {fileID: 5826172186313320005, guid: 91f629f57eb38430a922862313d16df4, type: 3}
+      propertyPath: stageFailClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 79e6baad2fd414b82a6d49ce1568d2e5, type: 3}
+    - target: {fileID: 5826172186313320005, guid: 91f629f57eb38430a922862313d16df4, type: 3}
       propertyPath: bgmAudioSource
       value: 
       objectReference: {fileID: 1225404722}
     - target: {fileID: 5826172186313320005, guid: 91f629f57eb38430a922862313d16df4, type: 3}
-      propertyPath: flipSoundAudioSource
+      propertyPath: stageClearClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
+    - target: {fileID: 5826172186313320005, guid: 91f629f57eb38430a922862313d16df4, type: 3}
+      propertyPath: CardSoundAudioSource
       value: 
       objectReference: {fileID: 1225404721}
     - target: {fileID: 9015421845116667635, guid: 91f629f57eb38430a922862313d16df4, type: 3}
@@ -328,16 +336,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5222496954006646734, guid: e7e57f306f1664936945484936452319, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 6892052561388618385, guid: e7e57f306f1664936945484936452319, type: 3}
       propertyPath: m_Name
       value: SoundManagerParent
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7472273387451507312, guid: e7e57f306f1664936945484936452319, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

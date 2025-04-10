@@ -11,21 +11,20 @@ public class GameManager : MonoBehaviour
     private float timeLimit;
     private string levelkey = "LEVEL";
 
-    private MemberSpritesContainer memberSpritesContainer;
 
     [SerializeField] private EndGameUI endCardGameUI;
-    [SerializeField] private CardPlacementController cardPlacementController;
     [SerializeField] private StageController stageController;
     [SerializeField] private SoundManager soundManager;
     [SerializeField] private Cards card;
     [SerializeField] private Image timeBar;
     [SerializeField] private Color startColor;
     [SerializeField] private int level = 0;
-    [SerializeField] private int remainCard = 16;
     [SerializeField] private Sprite[] stageIconSprites;
     [SerializeField] private Sprite[] members1;
     [SerializeField] private Sprite[] members2;
     [SerializeField] private Sprite[] members3;
+    [SerializeField] private CardGameController cardGameController;
+    [SerializeField] private Slider timeSlideBar;
 
     [Space(10f)]
     public GameObject endPanel;
@@ -34,7 +33,23 @@ public class GameManager : MonoBehaviour
     public bool isTouchStartScreen;
     public bool isPlaying = false;
 
+    public int remainCard;
 
+
+    public MemberSpritesContainer memberSpritesContainer;
+    public CardPlacementController cardPlacementController;
+
+
+    public enum CardGamePlaceMode
+    {
+        Basic,
+        Blind
+    }
+    public enum CardGameEventMode
+    {
+        Basic,
+        Shuffle
+    }
 
 
     private void Awake()
@@ -70,7 +85,7 @@ public class GameManager : MonoBehaviour
 
         stageController.UpdateButtonLockImage(clearedLevel);
 
-        CardGameController.instance.touchBlockPanel.enabled = false;
+        cardGameController.touchBlockPanel.enabled = false;
     }
 
     private void Update()
@@ -80,9 +95,10 @@ public class GameManager : MonoBehaviour
             //시간이 지나갈수록 타임바가 차오름
             time += Time.deltaTime;
             float progress = 1 - Mathf.Clamp01(time / timeLimit);
-            timeBar.fillAmount = progress;
+            timeSlideBar.value = progress;
             //타임바의 비율에 따라 타임바 색 조정
             TimeBarColor(progress);
+
 
             //테스트용 성공 커맨드
             if (Input.GetKeyDown(KeyCode.D))
@@ -114,24 +130,29 @@ public class GameManager : MonoBehaviour
         time += penaltyAmount;
     }
 
-    public void StartCardGame(int level)
+    public void StartCardGame(int level, (CardGamePlaceMode, CardGameEventMode) gameMode)
     {
         this.level = level;
 
-        //카드 배치 로직
-        List<Cards> remain = cardPlacementController.StartCardPlacement(level, memberSpritesContainer, card);
-        remainCard = remain.Count;
-
         time = 0.0f;
         Time.timeScale = 1.0f;
-        timeBar.fillAmount = 0.0f;
+        timeSlideBar.value = 0.0f;
 
         SetTimeLimit(level);    // 레벨에 따라 timeLimit 설정
 
         stageController.OnStartCardGame();
 
+        //카드 배치 로직
+        List<Cards> remain = cardPlacementController.StartCardPlacement(level, memberSpritesContainer, card, gameMode.Item1);
+        remainCard = remain.Count;
+
         //stageController에서 카드 배치가 끝난 뒤 isPlaying을 true로 변경해줄 예정
         isPlaying = true;
+
+        if (gameMode.Item2 == CardGameEventMode.Shuffle)
+        {
+            StartCoroutine(CardGameController.instance.PlayCardShuffle());
+        }
     }
 
     private void GameOver()
@@ -158,12 +179,16 @@ public class GameManager : MonoBehaviour
                 stageController.UpdateBestTime(level, time);
             }
 
+            SoundManager.instance.PlayStageClearSound(true);
+
             endCardGameUI.OpenWinUI(time);
         }
         else
         {
             //실패시
             endCardGameUI.OpenFailUI();
+
+            SoundManager.instance.PlayStageClearSound(false);
         }
         isPlaying = false;
 

@@ -45,7 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmAudioSource: {fileID: 0}
-  flipSoundAudioSource: {fileID: 0}
+  CardSoundAudioSource: {fileID: 0}
+  StageStateAudioSource: {fileID: 0}
   flipSuccessSoundClip: {fileID: 8300000, guid: c489e75eecd5040deace3a7d87f11b67, type: 3}
   flipFailSoundClip: {fileID: 8300000, guid: 460ec1d79fc724bcca410b7da1e2fb00, type: 3}
   gameBGMClip: {fileID: 8300000, guid: 8ecb1a22e76e0473ba20d815847de9f2, type: 3}
+  setCardClip: {fileID: 8300000, guid: c489e75eecd5040deace3a7d87f11b67, type: 3}
+  touchCardClip: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  stageClearClip: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
+  stageFailClip: {fileID: 8300000, guid: 79e6baad2fd414b82a6d49ce1568d2e5, type: 3}

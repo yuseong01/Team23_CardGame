@@ -10,7 +10,6 @@ public class StageController : MonoBehaviour
     [SerializeField] private StageBtn StageBtnPrefab;
 
     [SerializeField] private GameObject ModChangedBtnPrefab;
-    [SerializeField] private Transform ModChangedBtnPrefabParents;
 
     [SerializeField] private ScrollController scrollController;
     [SerializeField] int modcount;
@@ -30,22 +29,7 @@ public class StageController : MonoBehaviour
             newBtn.Init(i + 1, memberIconsArray[i]);
 
             stageBtnList.Add(newBtn);
-
-            for (int j = 0; j < 3; j++)
-            {
-                GameObject modButton = Instantiate(ModChangedBtnPrefab, newBtn.transform);
-
-                modButton.GetComponentInChildren<Text>().text = "Mod" + j;
-
-                GameObject capturedButon = modButton;
-
-                capturedButon.GetComponent<Button>().onClick.AddListener(() =>
-                {
-                    modButton.transform.SetSiblingIndex(0);
-                });
-            }
         }
-
 
         scrollController.Init(stageBtnList);
     }
@@ -54,9 +38,25 @@ public class StageController : MonoBehaviour
     {
         for (int i = 0; i < stageBtnList.Count; i++)
         {
+            var targetButton = stageBtnList[i];
+
+            targetButton.stageStartButton.enabled = false;
+
+
+            for (int j = 0; j < targetButton.gameModeButtons.Length; j++)
+            {
+                targetButton.gameModeButtons[j].gameObject.SetActive(false);
+            }
+
             if (i <= clearedLevel)
             {
-                stageBtnList[i].lockImageGameObject.SetActive(false);
+                targetButton.lockImageGameObject.SetActive(false);
+
+                targetButton.stageStartButton.enabled = true;
+                for (int j = 0; j < targetButton.gameModeButtons.Length; j++)
+                {
+                    targetButton.gameModeButtons[j].gameObject.SetActive(true);
+                }
             }
         }
     }

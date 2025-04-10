@@ -7,26 +7,38 @@ public class CardGameController : MonoBehaviour
 {
     public static CardGameController instance;
 
-    int remainCard;
 
     [SerializeField] private SoundManager soundManager;
+    [SerializeField] private CardPlacementController cardPlacementController;
     
     public Cards firstCard;
     public Cards secondCard;
 
     public Image touchBlockPanel;
 
+    public ShuffleCardPlaceAnimation shuffleCardPlaceAnimation;
+
+
     private void Awake()
     {
-        if (instance == null)
+        if(instance == null)
         {
             instance = this;
         }
-        else
+
+        shuffleCardPlaceAnimation = new(cardPlacementController);
+    }
+
+    public IEnumerator PlayCardShuffle()
+    {
+        while(GameManager.instance.isPlaying)
         {
-            Destroy(instance);
+            yield return new WaitForSeconds(6f);
+
+            StartCoroutine(shuffleCardPlaceAnimation.Play());
         }
     }
+
 
     public IEnumerator CardMatched()
     {
@@ -47,7 +59,7 @@ public class CardGameController : MonoBehaviour
             secondCard.OnSuccess();
 
             //남은 카드 수 감소
-            remainCard -= 2;
+            GameManager.instance.remainCard -= 2;
         }
         //두 카드가 같지 않다면
         else

@@ -5,21 +5,63 @@ using UnityEngine.UI;
 
 public class StageBtn : MonoBehaviour
 {    
-    private float bestTime;
     
     [SerializeField] private Text stageText;
     [SerializeField] private Text bestTimeText;
 
-    [SerializeField] private Button stageStartButton;
-    [SerializeField] private Image mainIcon;
+    
+    //[SerializeField] private Image mainIcon;
     [SerializeField] private EndGameUI endGameUI;
 
+
+
+    [SerializeField] Button basicFirstButton;
+    [SerializeField] Button blindFirstButton;
+
+    [SerializeField] Button basicSecondButton;
+    [SerializeField] Button shuffleSecondButton;
+
+    public Button[] gameModeButtons;
     
     public GameObject lockImageGameObject;
+
+    public Button stageStartButton;
+
+
+    public (GameManager.CardGamePlaceMode, GameManager.CardGameEventMode) selectMode;
+
+    private float bestTime;
+
+
+    private void Awake()
+    {
+        basicFirstButton.onClick.AddListener(() => selectMode.Item1 = GameManager.CardGamePlaceMode.Blind);
+        blindFirstButton.onClick.AddListener(() => selectMode.Item1 = GameManager.CardGamePlaceMode.Basic);
+
+        basicSecondButton.onClick.AddListener(() => selectMode.Item2 = GameManager.CardGameEventMode.Shuffle);
+        shuffleSecondButton.onClick.AddListener(() => selectMode.Item2 = GameManager.CardGameEventMode.Basic);
+
+        gameModeButtons = new Button[]
+        {
+            basicFirstButton,
+            blindFirstButton,
+            basicSecondButton,
+            shuffleSecondButton
+        };
+
+        foreach (var item in gameModeButtons)
+        {
+            item.onClick.AddListener(() => item.transform.SetAsFirstSibling());
+        }
+    }
+
+
     private void Update()
     {
         ResetBestTimePlayerPrefs();
+
     }
+
     public void Init(int _level, Sprite iconSprite)
     {
         stageText.text = "Stage " + _level.ToString();
@@ -37,31 +79,22 @@ public class StageBtn : MonoBehaviour
         }
 
 
-        mainIcon.sprite = iconSprite;
+        //mainIcon.sprite = iconSprite;
         stageStartButton.onClick.AddListener(() => StartStage(_level));
     }
 
     public void StartStage(int _level)
     {
-        GameManager.instance.StartCardGame(_level);
+        GameManager.instance.StartCardGame(_level, selectMode);
     }
+
     public void GetBestTime(float bestTime)
     {
-        Debug.Log("GetTimeTest");
-
         this.bestTime = bestTime;
 
         SetBestTime();
     }
 
-    public void SetBestTime()
-    {
-        Debug.Log("SetTimeTest");
-        Debug.Log(bestTime);
-
-        bestTimeText.text= "Best Time: "+ bestTime.ToString("N2");
-    }
-    
     public void ResetBestTimePlayerPrefs()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -70,5 +103,13 @@ public class StageBtn : MonoBehaviour
             PlayerPrefs.Save();
             bestTimeText.text = "Best Time: ";
         }
+    }
+
+    public void SetBestTime()
+    {
+        Debug.Log("SetTimeTest");
+        Debug.Log(bestTime);
+
+        bestTimeText.text= "Best Time: "+ bestTime.ToString("N2");
     }
 }
