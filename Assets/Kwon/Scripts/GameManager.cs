@@ -29,14 +29,10 @@ public class GameManager : MonoBehaviour
 
     [Space(10f)]
     public GameObject endPanel;
-    public Cards firstCard;
-    public Cards secondCard;
     public int clearedLevel = 0;
     public int maxStageLevel;
     public bool isTouchStartScreen;
     public bool isPlaying = false;
-
-    public Image touchBlockPanel;
 
 
 
@@ -51,7 +47,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(instance);
         }
-        //audioSource = GetComponent<AudioSource>();
 
         //프레임조정
         Application.targetFrameRate = 60;
@@ -64,20 +59,61 @@ public class GameManager : MonoBehaviour
         memberSpritesContainer.AddSprites(members2);
         memberSpritesContainer.AddSprites(members3);
 
-        touchBlockPanel.enabled = false;
     }
 
     private void Start()
     {
+        //BGM 재생방식 바뀌면 없애도 되지 않을까 싶어요
         soundManager.PlayGameBGM();
 
         stageController.StageButtonCreate(stageIconSprites);
 
         stageController.UpdateButtonLockImage(clearedLevel);
+
+        CardGameController.instance.touchBlockPanel.enabled = false;
     }
 
-    //버튼에서 작동시킬때
-    //GameManager.instance.StartGame(level);
+    private void Update()
+    {
+        if (isPlaying)
+        {
+            //시간이 지나갈수록 타임바가 차오름
+            time += Time.deltaTime;
+            float progress = 1 - Mathf.Clamp01(time / timeLimit);
+            timeBar.fillAmount = progress;
+            //타임바의 비율에 따라 타임바 색 조정
+            TimeBarColor(progress);
+
+            //테스트용 성공 커맨드
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                remainCard = 0;
+            }
+            //테스트용 실패 커맨드
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                time = timeLimit;
+            }
+
+            if ((progress == 0) || (remainCard == 0))
+            {
+                GameOver();
+            }
+        }
+    }
+    //레벨별 제한시간 설정
+    public void SetTimeLimit(int level)
+    {
+        timeLimit = 20f + (level * 10f);
+    }
+    
+    //카드 매치 실패 패널티
+    public void AddMatchFailPenalty()
+    {
+        float penaltyAmount = timeLimit * 0.05f;
+        time += penaltyAmount;
+    }
+
     public void StartCardGame(int level)
     {
         this.level = level;
@@ -92,48 +128,10 @@ public class GameManager : MonoBehaviour
 
         SetTimeLimit(level);    // 레벨에 따라 timeLimit 설정
 
-        isPlaying = true;  
-        /*StartCoroutine(TimeFlowCoroutine());    // 시간 흐름 시작
-        CardPlacementController 카드배치 애니메이션 쪽으로 이동*/
-
         stageController.OnStartCardGame();
-    }
 
-    //레벨별 제한시간 설정
-    public void SetTimeLimit(int level)
-    {
-        timeLimit = 20f + (level * 10f);
-    }
-
-    public IEnumerator TimeFlowCoroutine()
-    {
-        while (isPlaying)
-        {
-            //시간이 지나갈수록 타임바가 차오름
-            time += Time.deltaTime;
-            float progress = 1- Mathf.Clamp01(time / timeLimit);
-            timeBar.fillAmount = progress;
-            //타임바의 비율에 따라 타임바 색 조정
-            TimeBarColor(progress);
-
-            //테스트용 성공 커맨드
-            if(Input.GetKeyDown(KeyCode.D))
-            {
-                remainCard = 0;
-            }
-            //테스트용 실패 커맨드
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                time = timeLimit;
-            }
-
-            if ((progress == 0) || (remainCard == 0))
-            {
-                GameOver();
-                yield break; // 코루틴 종료
-            }
-            yield return null;
-        }
+        //stageController에서 카드 배치가 끝난 뒤 isPlaying을 true로 변경해줄 예정
+        //isPlaying = true;
     }
 
     private void GameOver()
@@ -161,6 +159,13 @@ public class GameManager : MonoBehaviour
         Debug.Log("게임 종료");
     }
 
+    public void SetNewStageSetting()
+    {
+        endCardGameUI.gameObject.SetActive(false);
+
+        stageController.OnEndCardGame(clearedLevel);
+    }
+
     //타임바의 비율에 따라 타임바 색 조정
     public void TimeBarColor(float progress)
     {
@@ -178,95 +183,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void Matched()
+    //컴파일 오류때문에 임시생성
+    public Image touchBlockPanel;
+
+    public IEnumerator TimeFlowCoroutine()
     {
-        //두 카드가 같다면
-        if (firstCard.key.Item1 == secondCard.key.Item1 && firstCard.key.Item2 == secondCard.key.Item2)
-        {
-            //성공 사운드클립
-            soundManager.PlayFlipSuccessSound();
-
-            //카드는 앞면으로 놔둠, 정답이펙트
-            ShowMatchEffect(firstCard);
-            ShowMatchEffect(secondCard);
-
-            firstCard.OnSuccess();
-            secondCard.OnSuccess();
-
-         
-
-            //남은 카드 수 감소
-            remainCard -= 2;
-        }
-        //두 카드가 같지 않다면
-        else
-        {
-            //실패 사운드클립
-            soundManager.PlayFlipFailSound();
-
-            //카드 다시 뒤집기
-            firstCard.CloseCard();
-            secondCard.CloseCard();
-        }
-        //첫번째, 두번째 카드 변수 null로 초기화
-        firstCard = null;
-        secondCard = null;
-    }
-    
-    private void ShowMatchEffect(Cards card)
-    {
-        if (SparkleObjectPoolManager.instance != null)
-        {
-            GameObject sparkle = SparkleObjectPoolManager.instance.GetObject(card.transform.position);
-        }
-    }
-    
-    public void SetNewStageSetting()
-    {
-        endCardGameUI.gameObject.SetActive(false);
-
-        stageController.OnEndCardGame(clearedLevel);
-    }
-
-
-    public IEnumerator CardMatched()
-    {
-        touchBlockPanel.enabled = true;
-
-        yield return new WaitForSeconds(0.5f);
-
-        //두 카드가 같다면
-        if (firstCard.key.Item1 == secondCard.key.Item1 && firstCard.key.Item2 == secondCard.key.Item2)
-        {
-            //성공 사운드클립
-            soundManager.PlayFlipSuccessSound();
-
-            //카드는 앞면으로 놔둠, 정답이펙트
-            ShowMatchEffect(firstCard);
-            ShowMatchEffect(secondCard);
-
-            firstCard.OnSuccess();
-            secondCard.OnSuccess();
-
-            //남은 카드 수 감소
-            remainCard -= 2;
-        }
-        //두 카드가 같지 않다면
-        else
-        {
-            //실패 사운드클립
-            soundManager.PlayFlipFailSound();
-
-            //카드 다시 뒤집기
-            firstCard.CloseCard();
-            secondCard.CloseCard();
-        }
-
-        //첫번째, 두번째 카드 변수 null로 초기화
-        firstCard = null;
-        secondCard = null;
-
-        touchBlockPanel.enabled = false;
+        yield return null;
     }
 }
 
