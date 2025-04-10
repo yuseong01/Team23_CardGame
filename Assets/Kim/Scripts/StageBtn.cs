@@ -23,16 +23,19 @@ public class StageBtn : MonoBehaviour
     {
         stageText.text = "Stage " + _level.ToString();
 
+
         string timeKey = "BestTime_" + _level;
-        float saveBestTime=PlayerPrefs.GetFloat(timeKey,-1);
+        float saveBestTime = PlayerPrefs.GetFloat(timeKey, -1);
         if (saveBestTime != -1)
         {
-            bestTimeText.text="Best Time: "+saveBestTime.ToString("N2");
+            bestTimeText.text = "Best Time: " + saveBestTime.ToString("N2");
         }
         else
         {
             bestTimeText.text = "";
         }
+
+
         mainIcon.sprite = iconSprite;
         stageStartButton.onClick.AddListener(() => StartStage(_level));
     }
@@ -41,6 +44,7 @@ public class StageBtn : MonoBehaviour
     {
         GameManager.instance.StartCardGame(_level);
     }
+
     public void GetBestTime(float bestTime)
     {
         Debug.Log("GetTimeTest");
@@ -56,6 +60,7 @@ public class StageBtn : MonoBehaviour
         {
             PlayerPrefs.DeleteAll();
             PlayerPrefs.Save();
+            bestTimeText.text = "Best Time: ";
         }
     }
 

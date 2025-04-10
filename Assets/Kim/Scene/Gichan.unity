@@ -682,6 +682,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 432926596}
   m_CullTransparentMesh: 1
+--- !u!1 &464830962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 464830963}
+  m_Layer: 5
+  m_Name: ModChangeButtonParents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &464830963
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464830962}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2027933185}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &547116611
 GameObject:
   m_ObjectHideFlags: 0
@@ -1964,6 +1999,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1042989185}
   m_CullTransparentMesh: 1
+--- !u!1 &1215104607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1215104609}
+  - component: {fileID: 1215104608}
+  m_Layer: 0
+  m_Name: CardGameController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1215104608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215104607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04f662f4d1911e642bd03693f2950b5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundManager: {fileID: 1879269267}
+  firstCard: {fileID: 0}
+  secondCard: {fileID: 0}
+  touchBlockPanel: {fileID: 143039630}
+--- !u!4 &1215104609
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215104607}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 492.91754, y: 688.6605, z: 0.5218587}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1371778616
 GameObject:
   m_ObjectHideFlags: 0
@@ -2806,6 +2889,7 @@ RectTransform:
   m_Children:
   - {fileID: 696385856}
   - {fileID: 905195303}
+  - {fileID: 464830963}
   m_Father: {fileID: 794838077}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2822,9 +2906,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 824402652377721915, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
+      propertyPath: modcount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 824402652377721915, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
       propertyPath: scrollController
       value: 
       objectReference: {fileID: 641840708}
+    - target: {fileID: 824402652377721915, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
+      propertyPath: ModChangedBtnPrefab
+      value: 
+      objectReference: {fileID: 2658560378182384938, guid: 46f02f8c8227c404798982de491bbac1, type: 3}
     - target: {fileID: 824402652377721915, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
       propertyPath: StageBtnPrefabParents
       value: 
@@ -2833,6 +2925,10 @@ PrefabInstance:
       propertyPath: stageSelectUIGameObject
       value: 
       objectReference: {fileID: 2027933184}
+    - target: {fileID: 824402652377721915, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
+      propertyPath: ModChangedBtnPrefabParents
+      value: 
+      objectReference: {fileID: 464830963}
     - target: {fileID: 897090953426926558, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2976,3 +3072,4 @@ SceneRoots:
   - {fileID: 7626876632488728075}
   - {fileID: 1764963091}
   - {fileID: 794838077}
+  - {fileID: 1215104609}

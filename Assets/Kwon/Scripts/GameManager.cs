@@ -154,6 +154,8 @@ public class GameManager : MonoBehaviour
             {
                 PlayerPrefs.SetFloat(timeKey,time);
                 PlayerPrefs.Save();
+
+                stageController.UpdateBestTime(level, time);
             }
 
             endCardGameUI.OpenWinUI(time);
@@ -167,7 +169,6 @@ public class GameManager : MonoBehaviour
 
         cardPlacementController.EndCardPalcement();
 
-        stageController.UpdateBestTime(level,time);
 
 
         Debug.Log("게임 종료");
