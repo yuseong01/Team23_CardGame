@@ -5,63 +5,77 @@ using UnityEngine.UI;
 
 public class Cards : MonoBehaviour
 {
+    public (int, int) key;
+
+    public Vector2 size;
+
     public RectTransform rectTransform;
 
     public Image frontImage;
+    public Image backImage;
+    public Image selectImage;
 
-    public Button backImageButton;
+    public Button backObjectButton;
 
     public Animator anim;
 
-    public (int, int) key;
 
     private void Awake()
     {
-        backImageButton.onClick.AddListener(OpenCard);
+        backObjectButton.onClick.AddListener(OpenCard);
     }
 
-    public void Init((int, int) key, Sprite targetSprite)
+    public void Init((int, int) key, Sprite memberSprite)
     {
         this.key = key;
 
-        frontImage.sprite = targetSprite;
+        frontImage.sprite = memberSprite;
     }
 
     public void OpenCard()
     {
-        anim.SetBool("isOpen", true);
+        anim.SetBool("isPop", true);
 
         frontImage.gameObject.SetActive(true);
-        backImageButton.gameObject.SetActive(false);
+        backImage.gameObject.SetActive(false);
 
-        if(GameManager.instance.firstCard == null)
+        selectImage.gameObject.SetActive(true);
+
+
+        if (GameManager.instance.firstCard == null)
         {
             GameManager.instance.firstCard = this;
         }
         else
         {
             GameManager.instance.secondCard = this;
-            GameManager.instance.Matched();
+
+            StartCoroutine(GameManager.instance.CardMatched());
         }
     }
 
+
     public void CloseCard()
     {
-        Invoke(nameof(CloseCardInvoke), 0.5f);
-
-    }
-
-    public void CloseCardInvoke()
-    {
-        anim.SetBool("isOpen", false);
+        anim.SetBool("isPop", false);
 
         rectTransform.localScale = Vector2.one;
 
 
         frontImage.gameObject.SetActive(false);
-        backImageButton.gameObject.SetActive(true);
+        backImage.gameObject.SetActive(true);
+
+        selectImage.gameObject.SetActive(false);
     }
 
 
+    public void OnSuccess()
+    {
+        anim.SetBool("isPop", false);
+
+        selectImage.gameObject.SetActive(false);
+    }
 
 }
+
+

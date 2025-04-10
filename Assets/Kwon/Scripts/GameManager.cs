@@ -9,18 +9,16 @@ public class GameManager : MonoBehaviour
 
     private float time = 0.0f;
     private float timeLimit;
-    private bool isPlaying = false;
     private string levelkey = "LEVEL";
 
     private MemberSpritesContainer memberSpritesContainer;
-    //private AudioSource audioSource;
 
     [SerializeField] private EndGameUI endCardGameUI;
     [SerializeField] private CardPlacementController cardPlacementController;
     [SerializeField] private StageController stageController;
+    [SerializeField] private SoundManager soundManager;
     [SerializeField] private Cards card;
     [SerializeField] private Image timeBar;
-    [SerializeField] private GameObject matchEffect;
     [SerializeField] private Color startColor;
     [SerializeField] private int level = 0;
     [SerializeField] private int remainCard = 16;
@@ -28,8 +26,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Sprite[] members1;
     [SerializeField] private Sprite[] members2;
     [SerializeField] private Sprite[] members3;
-    //[SerializeField] private AudioClip success;
-    //[SerializeField] private AudioClip failure;
 
     [Space(10f)]
     public GameObject endPanel;
@@ -38,7 +34,11 @@ public class GameManager : MonoBehaviour
     public int clearedLevel = 0;
     public int maxStageLevel;
     public bool isTouchStartScreen;
-  
+    public bool isPlaying = false;
+
+    public Image touchBlockPanel;
+
+
 
 
     private void Awake()
@@ -63,10 +63,14 @@ public class GameManager : MonoBehaviour
         memberSpritesContainer.AddSprites(members1);
         memberSpritesContainer.AddSprites(members2);
         memberSpritesContainer.AddSprites(members3);
+
+        touchBlockPanel.enabled = false;
     }
 
     private void Start()
     {
+        soundManager.PlayGameBGM();
+
         stageController.StageButtonCreate(stageIconSprites);
 
         stageController.UpdateButtonLockImage(clearedLevel);
@@ -88,8 +92,9 @@ public class GameManager : MonoBehaviour
 
         SetTimeLimit(level);    // 레벨에 따라 timeLimit 설정
 
-        isPlaying = true;
-        StartCoroutine(TimeFlowCoroutine());    // 시간 흐름 시작
+        isPlaying = true;  
+        /*StartCoroutine(TimeFlowCoroutine());    // 시간 흐름 시작
+        CardPlacementController 카드배치 애니메이션 쪽으로 이동*/
 
         stageController.OnStartCardGame();
     }
@@ -100,7 +105,7 @@ public class GameManager : MonoBehaviour
         timeLimit = 20f + (level * 10f);
     }
 
-    private IEnumerator TimeFlowCoroutine()
+    public IEnumerator TimeFlowCoroutine()
     {
         while (isPlaying)
         {
@@ -179,10 +184,16 @@ public class GameManager : MonoBehaviour
         if (firstCard.key.Item1 == secondCard.key.Item1 && firstCard.key.Item2 == secondCard.key.Item2)
         {
             //성공 사운드클립
-            //audioSource.PlayOneShot(success);
+            soundManager.PlayFlipSuccessSound();
+
             //카드는 앞면으로 놔둠, 정답이펙트
             ShowMatchEffect(firstCard);
             ShowMatchEffect(secondCard);
+
+            firstCard.OnSuccess();
+            secondCard.OnSuccess();
+
+         
 
             //남은 카드 수 감소
             remainCard -= 2;
@@ -191,7 +202,7 @@ public class GameManager : MonoBehaviour
         else
         {
             //실패 사운드클립
-            //audioSource.PlayOneShot(failure);
+            soundManager.PlayFlipFailSound();
 
             //카드 다시 뒤집기
             firstCard.CloseCard();
@@ -204,8 +215,10 @@ public class GameManager : MonoBehaviour
     
     private void ShowMatchEffect(Cards card)
     {
-        GameObject effect = Instantiate(matchEffect, card.transform);
-        effect.transform.localPosition = Vector3.zero;
+        if (SparkleObjectPoolManager.instance != null)
+        {
+            GameObject sparkle = SparkleObjectPoolManager.instance.GetObject(card.transform.position);
+        }
     }
     
     public void SetNewStageSetting()
@@ -213,6 +226,47 @@ public class GameManager : MonoBehaviour
         endCardGameUI.gameObject.SetActive(false);
 
         stageController.OnEndCardGame(clearedLevel);
+    }
+
+
+    public IEnumerator CardMatched()
+    {
+        touchBlockPanel.enabled = true;
+
+        yield return new WaitForSeconds(0.5f);
+
+        //두 카드가 같다면
+        if (firstCard.key.Item1 == secondCard.key.Item1 && firstCard.key.Item2 == secondCard.key.Item2)
+        {
+            //성공 사운드클립
+            soundManager.PlayFlipSuccessSound();
+
+            //카드는 앞면으로 놔둠, 정답이펙트
+            ShowMatchEffect(firstCard);
+            ShowMatchEffect(secondCard);
+
+            firstCard.OnSuccess();
+            secondCard.OnSuccess();
+
+            //남은 카드 수 감소
+            remainCard -= 2;
+        }
+        //두 카드가 같지 않다면
+        else
+        {
+            //실패 사운드클립
+            soundManager.PlayFlipFailSound();
+
+            //카드 다시 뒤집기
+            firstCard.CloseCard();
+            secondCard.CloseCard();
+        }
+
+        //첫번째, 두번째 카드 변수 null로 초기화
+        firstCard = null;
+        secondCard = null;
+
+        touchBlockPanel.enabled = false;
     }
 }
 
