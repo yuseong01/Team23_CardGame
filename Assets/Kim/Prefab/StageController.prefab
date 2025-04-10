@@ -44,5 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b17742d2c5aafb48b97cf97e4cb69a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageSelectUIGameObject: {fileID: 0}
   StageBtnPrefabParents: {fileID: 0}
   StageBtnPrefab: {fileID: 8662816397365297159, guid: 76724142eecc61b43b5b4a4d6371ca3b, type: 3}
+  scrollController: {fileID: 0}

@@ -2549,6 +2549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b42d65f385a0ea4aa89d96dfd1b52ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageBtn: {fileID: 8662816397365297159, guid: 76724142eecc61b43b5b4a4d6371ca3b, type: 3}
   names:
   - "\uC774\uBBFC\uD601"
   - "\uD55C\uC6B1\uC9C4"
@@ -2738,10 +2739,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 824402652377721915, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
-      propertyPath: scrollSnap
-      value: 
-      objectReference: {fileID: 641840708}
-    - target: {fileID: 824402652377721915, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
       propertyPath: scrollController
       value: 
       objectReference: {fileID: 641840708}
@@ -2750,17 +2747,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 629055066}
     - target: {fileID: 824402652377721915, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
-      propertyPath: ClearStageBestTimeText
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 824402652377721915, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
       propertyPath: stageSelectUIGameObject
       value: 
       objectReference: {fileID: 2027933184}
-    - target: {fileID: 824402652377721915, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
-      propertyPath: stageScrollViewGameObject
-      value: 
-      objectReference: {fileID: 905195302}
     - target: {fileID: 897090953426926558, guid: ae91290bebe1a8349ac12f873a32af4f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -27,6 +27,7 @@ public class EndGameUI : MonoBehaviour
     {
         titleTxt.text = "CLEAR";
         timerTxt.text = score.ToString("N2");
+        
         endUI.SetActive(true);
         ChangeProfileLoop();
     }

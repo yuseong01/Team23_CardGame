@@ -51,7 +51,6 @@ public class StageController : MonoBehaviour
         stageSelectUIGameObject.SetActive(true);
 
         UpdateButtonLockImage(clearedLevel);
-
     }
 
 }
