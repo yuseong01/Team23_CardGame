@@ -483,6 +483,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3030869588057226066}
     - target: {fileID: 7733776080734736753, guid: 3ac58c9fde1fb97468545d8c0ad19f77, type: 3}
+      propertyPath: matchEffect
+      value: 
+      objectReference: {fileID: 5777813931499615299, guid: 61580bb3ba204d34f8bc6f8bbdd37c77, type: 3}
+    - target: {fileID: 7733776080734736753, guid: 3ac58c9fde1fb97468545d8c0ad19f77, type: 3}
       propertyPath: endCardGameUI
       value: 
       objectReference: {fileID: 5564224370854337210}

@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageController : MonoBehaviour
 {
     [SerializeField] private GameObject stageSelectUIGameObject;
     [SerializeField] private Transform StageBtnPrefabParents;
     [SerializeField] private StageBtn StageBtnPrefab;
+    [SerializeField] private ScrollController scrollController;
 
     List<StageBtn> stageBtnList;
 
@@ -24,6 +26,8 @@ public class StageController : MonoBehaviour
 
             stageBtnList.Add(newBtn);
         }
+
+        scrollController.Init(stageBtnList);
     }
 
     public void UpdateButtonLockImage(int clearedLevel)
@@ -45,6 +49,9 @@ public class StageController : MonoBehaviour
     public void OnEndCardGame(int clearedLevel)
     {
         stageSelectUIGameObject.SetActive(true);
+
         UpdateButtonLockImage(clearedLevel);
+
     }
+
 }

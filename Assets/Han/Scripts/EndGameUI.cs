@@ -57,7 +57,6 @@ public class EndGameUI : MonoBehaviour
             yield return new WaitForSeconds(2f); // 2초마다 변경
             
             profile.SetProfile(i, names[i]);
-
             i++;
         }
     }

@@ -5,9 +5,14 @@ using UnityEngine.UI;
 
 public class StageBtn : MonoBehaviour
 {
-    [SerializeField] Text stageText;
-    [SerializeField] Button button;
-    [SerializeField] Image mainIcon;
+    float bestTime;
+
+    [SerializeField] private Text stageText;
+    [SerializeField] private Text bestTimeText;
+    [SerializeField] private Button button;
+    [SerializeField] private Image mainIcon;
+
+    [SerializeField] private EndGameUI endGameUI;
 
     public GameObject lockImageGameObject;
 
@@ -16,7 +21,6 @@ public class StageBtn : MonoBehaviour
         stageText.text = "Stage " + _level.ToString();
 
         mainIcon.sprite = iconSprite;
-
         button.onClick.AddListener(() => StartStage(_level));
     }
 
@@ -25,5 +29,8 @@ public class StageBtn : MonoBehaviour
         GameManager.instance.StartCardGame(_level);
     }
 
-}
+    public void GetBestTime(float bestTime)
+    {
 
+    }
+}
