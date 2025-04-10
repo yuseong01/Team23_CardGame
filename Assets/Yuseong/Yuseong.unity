@@ -140,7 +140,7 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1225404722}
     - target: {fileID: 5826172186313320005, guid: 91f629f57eb38430a922862313d16df4, type: 3}
-      propertyPath: flipSoundAudioSource
+      propertyPath: CardSoundAudioSource
       value: 
       objectReference: {fileID: 1225404721}
     - target: {fileID: 9015421845116667635, guid: 91f629f57eb38430a922862313d16df4, type: 3}
@@ -328,16 +328,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5222496954006646734, guid: e7e57f306f1664936945484936452319, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 6892052561388618385, guid: e7e57f306f1664936945484936452319, type: 3}
       propertyPath: m_Name
       value: SoundManagerParent
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7472273387451507312, guid: e7e57f306f1664936945484936452319, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
