@@ -233,7 +233,7 @@ public class GameManager : MonoBehaviour
     {
         touchBlockPanel.enabled = true;
 
-        yield return new WaitForSeconds(0.33f);
+        yield return new WaitForSeconds(0.5f);
 
         //두 카드가 같다면
         if (firstCard.key.Item1 == secondCard.key.Item1 && firstCard.key.Item2 == secondCard.key.Item2)

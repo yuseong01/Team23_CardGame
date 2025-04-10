@@ -34,7 +34,7 @@ public class Cards : MonoBehaviour
 
     public void OpenCard()
     {
-        anim.SetBool("isOpen", true);
+        anim.SetBool("isPop", true);
 
         frontImage.gameObject.SetActive(true);
         backImage.gameObject.SetActive(false);
@@ -57,7 +57,7 @@ public class Cards : MonoBehaviour
 
     public void CloseCard()
     {
-        anim.SetBool("isOpen", false);
+        anim.SetBool("isPop", false);
 
         rectTransform.localScale = Vector2.one;
 
@@ -71,6 +71,8 @@ public class Cards : MonoBehaviour
 
     public void OnSuccess()
     {
+        anim.SetBool("isPop", false);
+
         selectImage.gameObject.SetActive(false);
     }
 
