@@ -18,8 +18,7 @@ public class ScrollController : MonoBehaviour
     private List<RectTransform> stageButtonsRectTranformList = new();
     //스테이지의 위치 
     private Vector2 stageImagePosition;
-
-
+    
     //StageBtn을 리스트로 받아서 초기화를 시키는 함수
     public void Init(List<StageBtn> stageBtns)
     {
@@ -31,15 +30,12 @@ public class ScrollController : MonoBehaviour
         }
     }
 
-    //OnEndDrag메서드를 실행시키기위한 함수
-    public void TriggerEndDrag()
+    public void AnimStopCoroutine()
     {
-        PointerEventData nullData = new PointerEventData(EventSystem.current);
-        OnEndDrag(nullData);
+        StopCoroutine(StartSnapCoroutine());
+        //StartCoroutine(StartSnapCoroutine());
     }
-
-    //드래그가 끝난시점에 스테이지간에 거리를 비교하는 함수
-    public void OnEndDrag(PointerEventData eventData)
+    public void OnPointDownEndDrag()
     {
         //float의 가장큰수를 비교하기위한 코드  [float.MaxValue*(실수중 가장 큰함수)*]
         float minDistance = float.MaxValue;
@@ -66,10 +62,11 @@ public class ScrollController : MonoBehaviour
         StartCoroutine(StartSnapCoroutine());
     }
 
+    //더 가까운 이미지를 오브젝트 중앙으로 이동시키는 코루틴
 
-    //더 가까운 이미지를 오브젝트 중앙으로 이동시키는 함수
     private IEnumerator StartSnapCoroutine()
-    {   //이미지의 포지션과 content 포지션의 거리가 0.1이하일때까지 실행
+    {   
+        //이미지의 포지션과 content 포지션의 거리가 0.1이하일때까지 실행
         while(Vector2.Distance(stageImagePosition, contant.anchoredPosition) > 0.1f)
         { 
             contant.anchoredPosition = Vector2.Lerp(contant.anchoredPosition, stageImagePosition, Time.deltaTime * snapSpeed);

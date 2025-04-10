@@ -836,8 +836,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8305ac32f3acbcf428ba58d258b9d7ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  frameImage: {fileID: 0}
   image: {fileID: 939763340}
   nameTxt: {fileID: 1042989187}
+  profileImages: []
+  failImages: []
+  shakeAngle: 1
+  shakeSpeed: 2
 --- !u!1 &620429297
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,7 +972,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -379.99963, y: 632}
+  m_AnchoredPosition: {x: -540, y: 632}
   m_SizeDelta: {x: 0, y: 1264}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &629055067
@@ -1387,7 +1392,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 764393147}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -1994,6 +1999,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundManager: {fileID: 1879269267}
+  cardPlacementController: {fileID: 0}
   firstCard: {fileID: 0}
   secondCard: {fileID: 0}
   touchBlockPanel: {fileID: 143039630}
@@ -2681,17 +2687,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b42d65f385a0ea4aa89d96dfd1b52ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clearColor: {r: 0, g: 0, b: 0, a: 0}
+  failColor: {r: 0, g: 0, b: 0, a: 0}
+  endUI: {fileID: 1890303613}
+  clearTitle: {fileID: 0}
+  failTitle: {fileID: 0}
+  animator: {fileID: 0}
+  profile: {fileID: 579861935}
+  timerTxt: {fileID: 119055014}
+  touchButton: {fileID: 0}
   names:
   - "\uC774\uBBFC\uD601"
   - "\uD55C\uC6B1\uC9C4"
   - "\uAE40\uAE30\uCC2C"
   - "\uAD8C\uC6B0\uC131"
   - "\uC7A5\uC720\uC131"
-  endUI: {fileID: 1890303613}
-  titleTxt: {fileID: 1623221980}
-  timerTxt: {fileID: 119055014}
-  profile: {fileID: 579861935}
-  retryButton: {fileID: 318845695}
+  profileChangeInterval: 0
 --- !u!1001 &1895411300
 PrefabInstance:
   m_ObjectHideFlags: 0

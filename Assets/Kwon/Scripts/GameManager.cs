@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     private float timeLimit;
     private string levelkey = "LEVEL";
 
-
     [SerializeField] private EndGameUI endCardGameUI;
     [SerializeField] private StageController stageController;
     [SerializeField] private SoundManager soundManager;
@@ -35,10 +34,8 @@ public class GameManager : MonoBehaviour
 
     public int remainCard;
 
-
     public MemberSpritesContainer memberSpritesContainer;
     public CardPlacementController cardPlacementController;
-
 
     public enum CardGamePlaceMode
     {
@@ -73,7 +70,6 @@ public class GameManager : MonoBehaviour
         memberSpritesContainer.AddSprites(members1);
         memberSpritesContainer.AddSprites(members2);
         memberSpritesContainer.AddSprites(members3);
-
     }
 
     private void Start()
@@ -193,8 +189,6 @@ public class GameManager : MonoBehaviour
         isPlaying = false;
 
         cardPlacementController.EndCardPalcement();
-
-
 
         Debug.Log("게임 종료");
     }
