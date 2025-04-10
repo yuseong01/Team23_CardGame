@@ -30,7 +30,8 @@ public class ScrollController : MonoBehaviour
             stageButtonsRectTranformList.Add(stageBtns[i].GetComponent<RectTransform>());
         }
     }
-    //OnEndDrag메서드를 실행시키기위한 실행 함수
+
+    //OnEndDrag메서드를 실행시키기위한 함수
     public void TriggerEndDrag()
     {
         PointerEventData nullData = new PointerEventData(EventSystem.current);
@@ -65,6 +66,8 @@ public class ScrollController : MonoBehaviour
         StartCoroutine(StartSnapCoroutine());
     }
 
+
+    //더 가까운 이미지를 오브젝트 중앙으로 이동시키는 함수
     private IEnumerator StartSnapCoroutine()
     {   //이미지의 포지션과 content 포지션의 거리가 0.1이하일때까지 실행
         while(Vector2.Distance(stageImagePosition, contant.anchoredPosition) > 0.1f)

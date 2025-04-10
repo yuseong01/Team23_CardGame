@@ -30,29 +30,25 @@ public class StageController : MonoBehaviour
             newBtn.Init(i + 1, memberIconsArray[i]);
 
             stageBtnList.Add(newBtn);
+
+            for (int j = 0; j < 3; j++)
+            {
+                GameObject modButton = Instantiate(ModChangedBtnPrefab, newBtn.transform);
+
+                modButton.GetComponentInChildren<Text>().text = "Mod" + j;
+
+                GameObject capturedButon = modButton;
+
+                capturedButon.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    modButton.transform.SetSiblingIndex(0);
+                });
+            }
         }
-        ModChangeButtonCreate(modcount);
+
+
         scrollController.Init(stageBtnList);
     }
-
-    public void ModChangeButtonCreate(int modCount)
-    {
-
-        for (int i = 0; i < modCount; i++)
-        {
-            GameObject modButton = Instantiate(ModChangedBtnPrefab, ModChangedBtnPrefabParents);
-
-            modButton.GetComponentInChildren<Text>().text = "Mod" + i;
-
-            GameObject capturedButon = modButton;
-
-            capturedButon.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                modButton.transform.SetSiblingIndex(0);
-            });
-        }
-    }
-
 
     public void UpdateButtonLockImage(int clearedLevel)
     {

@@ -13,6 +13,7 @@ public class StageBtn : MonoBehaviour
     [SerializeField] private Button stageStartButton;
     [SerializeField] private Image mainIcon;
     [SerializeField] private EndGameUI endGameUI;
+
     
     public GameObject lockImageGameObject;
     private void Update()
@@ -44,7 +45,6 @@ public class StageBtn : MonoBehaviour
     {
         GameManager.instance.StartCardGame(_level);
     }
-
     public void GetBestTime(float bestTime)
     {
         Debug.Log("GetTimeTest");
@@ -54,6 +54,14 @@ public class StageBtn : MonoBehaviour
         SetBestTime();
     }
 
+    public void SetBestTime()
+    {
+        Debug.Log("SetTimeTest");
+        Debug.Log(bestTime);
+
+        bestTimeText.text= "Best Time: "+ bestTime.ToString("N2");
+    }
+    
     public void ResetBestTimePlayerPrefs()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -62,13 +70,5 @@ public class StageBtn : MonoBehaviour
             PlayerPrefs.Save();
             bestTimeText.text = "Best Time: ";
         }
-    }
-
-    public void SetBestTime()
-    {
-        Debug.Log("SetTimeTest");
-        Debug.Log(bestTime);
-
-        bestTimeText.text= "Best Time: "+ bestTime.ToString("N2");
     }
 }
