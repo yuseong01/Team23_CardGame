@@ -48,6 +48,7 @@ public class EndGameUI : MonoBehaviour
         profile.SetProfile(0, names[0], clearColor); // 처음 이미지를 하나 세팅
         endUI.SetActive(true);
         animator.SetTrigger("isEnd"); // 애니메이션 재생
+        StartCoroutine(profile.ShakeImage());
         ChangeProfileLoop();
     }
 

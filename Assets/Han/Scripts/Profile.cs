@@ -18,6 +18,19 @@ public class Profile : MonoBehaviour
     [Header("FailImage")]
     [SerializeField] private Sprite[] failImages;
 
+    [Space(10)]
+    [Header("Shaking")]
+    [SerializeField] private float shakeAngle = 1f; // 흔들림 각도 범위
+    [SerializeField] private float shakeSpeed = 2f; // 흔들림 속도
+
+
+    private Quaternion frameImageOriginalRotation; // 기존 Rotation
+
+    public void Start()
+    {
+        frameImageOriginalRotation = frameImage.rectTransform.localRotation;
+    }
+
     // Fail
     public void SetProfile(Color color)
     {
@@ -40,5 +53,16 @@ public class Profile : MonoBehaviour
         frameImage.color = color;
         image.sprite = profileImages[idx];
         nameTxt.text = name;
+        StartCoroutine(ShakeImage());
+    }
+
+    public IEnumerator ShakeImage()
+    {
+        while (true)
+        {
+            float angle = Mathf.Sin(Time.time * shakeSpeed) * shakeAngle; // 시간에 따라 
+            frameImage.rectTransform.localRotation = frameImageOriginalRotation * Quaternion.Euler(0f, 0f, angle); ;
+            yield return null;
+        }
     }
 }
