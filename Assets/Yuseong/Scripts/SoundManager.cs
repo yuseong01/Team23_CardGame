@@ -51,7 +51,7 @@ public class SoundManager : MonoBehaviour
     }
     public void PlayTouchCardSound()
     {
-        CardSoundAudioSource.clip = flipFailSoundClip;
+        CardSoundAudioSource.clip = touchCardClip;
         CardSoundAudioSource.Play();
     }
     public void PlayStageClearSound(bool stageClearCheck)
