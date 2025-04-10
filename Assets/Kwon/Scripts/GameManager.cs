@@ -11,10 +11,8 @@ public class GameManager : MonoBehaviour
     private float timeLimit;
     private string levelkey = "LEVEL";
 
-    private MemberSpritesContainer memberSpritesContainer;
 
     [SerializeField] private EndGameUI endCardGameUI;
-    [SerializeField] private CardPlacementController cardPlacementController;
     [SerializeField] private StageController stageController;
     [SerializeField] private SoundManager soundManager;
     [SerializeField] private Cards card;
@@ -26,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Sprite[] members1;
     [SerializeField] private Sprite[] members2;
     [SerializeField] private Sprite[] members3;
+    [SerializeField] private CardGameController cardGameController;
 
     [Space(10f)]
     public GameObject endPanel;
@@ -35,6 +34,20 @@ public class GameManager : MonoBehaviour
     public bool isPlaying = false;
 
 
+    public MemberSpritesContainer memberSpritesContainer;
+    public CardPlacementController cardPlacementController;
+
+
+    public enum CardGamePlaceMode
+    {
+        Basic,
+        Blind
+    }
+    public enum CardGameEventMode
+    {
+        Basic,
+        Shuffle
+    }
 
 
     private void Awake()
@@ -70,7 +83,7 @@ public class GameManager : MonoBehaviour
 
         stageController.UpdateButtonLockImage(clearedLevel);
 
-        CardGameController.instance.touchBlockPanel.enabled = false;
+        cardGameController.touchBlockPanel.enabled = false;
     }
 
     private void Update()
@@ -114,13 +127,9 @@ public class GameManager : MonoBehaviour
         time += penaltyAmount;
     }
 
-    public void StartCardGame(int level)
+    public void StartCardGame(int level, (CardGamePlaceMode, CardGameEventMode) gameMode)
     {
         this.level = level;
-
-        //카드 배치 로직
-        List<Cards> remain = cardPlacementController.StartCardPlacement(level, memberSpritesContainer, card);
-        remainCard = remain.Count;
 
         time = 0.0f;
         Time.timeScale = 1.0f;
@@ -130,8 +139,17 @@ public class GameManager : MonoBehaviour
 
         stageController.OnStartCardGame();
 
+        //카드 배치 로직
+        List<Cards> remain = cardPlacementController.StartCardPlacement(level, memberSpritesContainer, card, gameMode.Item1);
+        remainCard = remain.Count;
+
         //stageController에서 카드 배치가 끝난 뒤 isPlaying을 true로 변경해줄 예정
         isPlaying = true;
+
+        if (gameMode.Item2 == CardGameEventMode.Shuffle)
+        {
+            StartCoroutine(CardGameController.instance.PlayCardShuffle());
+        }
     }
 
     private void GameOver()

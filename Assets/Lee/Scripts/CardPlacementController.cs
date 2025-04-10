@@ -8,7 +8,7 @@ public class CardPlacementController : MonoBehaviour
 {
     private int defalutColumnCount = 3;
 
-    private List<(int, int)> cardKeyList = new();
+    public List<(int, int)> cardKeyList = new();
     public List<Cards> placedCardList = new();
 
     [Space(10f)]
@@ -23,17 +23,20 @@ public class CardPlacementController : MonoBehaviour
     CardPlaceAnimation[] cardAnim;
 
     BlindCardPlaceAnimation blindCardAnim;
+    BasicCardPlaceAnimation basicCardAnim;
 
     private void Awake()
     {
         cardAnim = new CardPlaceAnimation[]
         {
+            basicCardAnim = new(this),
             blindCardAnim = new(this)
         };
     }
 
+
     //게임 시작시 카드배치
-    public List<Cards> StartCardPlacement(int levelValue, MemberSpritesContainer memberSpritesContainer, Cards cardPrefab)
+    public List<Cards> StartCardPlacement(int levelValue, MemberSpritesContainer memberSpritesContainer, Cards cardPrefab, GameManager.CardGamePlaceMode placeMode)
     {
         var leveledColumnCount = defalutColumnCount + levelValue;
 
@@ -47,7 +50,18 @@ public class CardPlacementController : MonoBehaviour
         SetCardTable(totalCardCount, memberSpritesContainer, cardPrefab);
 
 
-        StartCoroutine(cardAnim[0].Play());
+        int gameModeIndex = 0;
+
+        if(placeMode == GameManager.CardGamePlaceMode.Basic)
+        {
+            gameModeIndex = 0;
+        }
+        else
+        {
+            gameModeIndex = 1;
+        }
+
+        StartCoroutine(cardAnim[gameModeIndex].Play());
 
         return placedCardList;
     }
@@ -65,7 +79,6 @@ public class CardPlacementController : MonoBehaviour
         placedCardList.Clear();
         cardKeyList.Clear();
     }
-
 
 
 
@@ -97,9 +110,6 @@ public class CardPlacementController : MonoBehaviour
 
     void SetCardTable(int totalCardCount, MemberSpritesContainer memberSpritesContainer, Cards cardPrefab)
     {
-        var memberSpriteList = memberSpritesContainer.spritesList;
-
-
         for (int i = 0; i < totalCardCount; i ++)
         {
             var targetCard = cardParentRectTransform.childCount <= i ?
@@ -110,7 +120,7 @@ public class CardPlacementController : MonoBehaviour
 
             targetCard.gameObject.SetActive(false);
 
-            targetCard.Init(cardKeyList[i], memberSpriteList[cardKeyList[i].Item1][cardKeyList[i].Item2]);
+            targetCard.Init(cardKeyList[i], memberSpritesContainer);
         }
     }
 

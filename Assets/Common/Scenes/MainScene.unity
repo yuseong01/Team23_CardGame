@@ -386,7 +386,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -380.00015, y: 632}
+  m_AnchoredPosition: {x: -539.99976, y: 632}
   m_SizeDelta: {x: 0, y: 1264}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &136673012
@@ -1427,6 +1427,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 701642229}
     - target: {fileID: 7733776080734736753, guid: 3ac58c9fde1fb97468545d8c0ad19f77, type: 3}
+      propertyPath: cardGameController
+      value: 
+      objectReference: {fileID: 1844519239}
+    - target: {fileID: 7733776080734736753, guid: 3ac58c9fde1fb97468545d8c0ad19f77, type: 3}
       propertyPath: stageBtnController
       value: 
       objectReference: {fileID: 0}
@@ -1831,6 +1835,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18b1d2c1ea285a24aa7d8a193a126012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1844519239 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1771333420975023874, guid: 00276a39ca648b24e91556bf1364dd6b, type: 3}
+  m_PrefabInstance: {fileID: 1902129348}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04f662f4d1911e642bd03693f2950b5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1848686390
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2224,6 +2239,10 @@ PrefabInstance:
       propertyPath: touchBlockPanel
       value: 
       objectReference: {fileID: 701642229}
+    - target: {fileID: 1771333420975023874, guid: 00276a39ca648b24e91556bf1364dd6b, type: 3}
+      propertyPath: cardPlacementController
+      value: 
+      objectReference: {fileID: 1734149262}
     - target: {fileID: 5338906080722696774, guid: 00276a39ca648b24e91556bf1364dd6b, type: 3}
       propertyPath: m_Name
       value: CardGameController

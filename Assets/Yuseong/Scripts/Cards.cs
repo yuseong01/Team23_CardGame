@@ -7,6 +7,8 @@ public class Cards : MonoBehaviour
 {
     public (int, int) key;
 
+    public bool isOpen;
+
     public Vector2 size;
 
     public RectTransform rectTransform;
@@ -25,11 +27,11 @@ public class Cards : MonoBehaviour
         backObjectButton.onClick.AddListener(OnSelectCard);
     }
 
-    public void Init((int, int) key, Sprite memberSprite)
+    public void Init((int, int) key, MemberSpritesContainer memberSpriteContainer)
     {
         this.key = key;
 
-        frontImage.sprite = memberSprite;
+        frontImage.sprite = memberSpriteContainer.spritesList[key.Item1][key.Item2];
     }
 
     public void OnSelectCard()
@@ -57,6 +59,8 @@ public class Cards : MonoBehaviour
 
         frontImage.gameObject.SetActive(true);
         backImage.gameObject.SetActive(false);
+
+        isOpen = true;
     }
 
     public void CloseCard()
@@ -69,6 +73,8 @@ public class Cards : MonoBehaviour
         backImage.gameObject.SetActive(true);
 
         selectImage.gameObject.SetActive(false);
+
+        isOpen = false;
     }
 
 

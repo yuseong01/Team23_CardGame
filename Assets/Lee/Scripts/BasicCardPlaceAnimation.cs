@@ -20,10 +20,20 @@ public class BasicCardPlaceAnimation : CardPlaceAnimation
         foreach (var item in cardList)
         {
             item.gameObject.SetActive(true);
+            item.OpenCard();
+
+            yield return new WaitForSeconds(animSpeed);
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        foreach (var item in cardList)
+        {
             item.CloseCard();
 
             yield return new WaitForSeconds(animSpeed);
         }
+
 
         gameManager.touchBlockPanel.enabled = false;
 

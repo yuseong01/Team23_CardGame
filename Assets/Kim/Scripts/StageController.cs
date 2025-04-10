@@ -58,9 +58,25 @@ public class StageController : MonoBehaviour
     {
         for (int i = 0; i < stageBtnList.Count; i++)
         {
+            var targetButton = stageBtnList[i];
+
+            targetButton.stageStartButton.enabled = false;
+
+
+            for (int j = 0; j < targetButton.gameModeButtons.Length; j++)
+            {
+                targetButton.gameModeButtons[j].gameObject.SetActive(false);
+            }
+
             if (i <= clearedLevel)
             {
-                stageBtnList[i].lockImageGameObject.SetActive(false);
+                targetButton.lockImageGameObject.SetActive(false);
+
+                targetButton.stageStartButton.enabled = true;
+                for (int j = 0; j < targetButton.gameModeButtons.Length; j++)
+                {
+                    targetButton.gameModeButtons[j].gameObject.SetActive(true);
+                }
             }
         }
     }

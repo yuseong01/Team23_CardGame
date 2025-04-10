@@ -10,23 +10,36 @@ public class CardGameController : MonoBehaviour
     int remainCard;
 
     [SerializeField] private SoundManager soundManager;
+    [SerializeField] private CardPlacementController cardPlacementController;
     
     public Cards firstCard;
     public Cards secondCard;
 
     public Image touchBlockPanel;
 
+    public ShuffleCardPlaceAnimation shuffleCardPlaceAnimation;
+
+
     private void Awake()
     {
-        if (instance == null)
+        if(instance == null)
         {
             instance = this;
         }
-        else
+
+        shuffleCardPlaceAnimation = new(cardPlacementController);
+    }
+
+    public IEnumerator PlayCardShuffle()
+    {
+        while(GameManager.instance.isPlaying)
         {
-            Destroy(instance);
+            yield return new WaitForSeconds(6f);
+
+            StartCoroutine(shuffleCardPlaceAnimation.Play());
         }
     }
+
 
     public IEnumerator CardMatched()
     {
