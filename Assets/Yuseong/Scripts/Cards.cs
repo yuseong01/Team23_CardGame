@@ -22,7 +22,7 @@ public class Cards : MonoBehaviour
 
     private void Awake()
     {
-        backObjectButton.onClick.AddListener(OpenCard);
+        backObjectButton.onClick.AddListener(OnSelectCard);
     }
 
     public void Init((int, int) key, Sprite memberSprite)
@@ -32,12 +32,9 @@ public class Cards : MonoBehaviour
         frontImage.sprite = memberSprite;
     }
 
-    public void OpenCard()
+    public void OnSelectCard()
     {
-        anim.SetBool("isPop", true);
-
-        frontImage.gameObject.SetActive(true);
-        backImage.gameObject.SetActive(false);
+        OpenCard();
 
         selectImage.gameObject.SetActive(true);
 
@@ -54,13 +51,19 @@ public class Cards : MonoBehaviour
         }
     }
 
+    public void OpenCard()
+    {
+        anim.SetTrigger("PopTrigger");
+
+        frontImage.gameObject.SetActive(true);
+        backImage.gameObject.SetActive(false);
+    }
 
     public void CloseCard()
     {
-        anim.SetBool("isPop", false);
+        anim.SetTrigger("PopTrigger");
 
         rectTransform.localScale = Vector2.one;
-
 
         frontImage.gameObject.SetActive(false);
         backImage.gameObject.SetActive(true);
@@ -71,7 +74,7 @@ public class Cards : MonoBehaviour
 
     public void OnSuccess()
     {
-        anim.SetBool("isPop", false);
+        anim.SetTrigger("PopTrigger");
 
         selectImage.gameObject.SetActive(false);
     }

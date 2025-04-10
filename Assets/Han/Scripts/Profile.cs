@@ -53,7 +53,7 @@ public class Profile : MonoBehaviour
         frameImage.color = color;
         image.sprite = profileImages[idx];
         nameTxt.text = name;
-        StartCoroutine(ShakeImage());
+        //StartCoroutine(ShakeImage());
     }
 
     public IEnumerator ShakeImage()

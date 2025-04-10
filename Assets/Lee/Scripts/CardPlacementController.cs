@@ -9,16 +9,28 @@ public class CardPlacementController : MonoBehaviour
     private int defalutColumnCount = 3;
 
     private List<(int, int)> cardKeyList = new();
-    private List<Cards> placedCardList = new();
+    public List<Cards> placedCardList = new();
 
     [Space(10f)]
-    [SerializeField] float placeAnimationTime; // 카드 배치 애니메이션 시간
+    public float placeAnimationTime; // 카드 배치 애니메이션 시간
 
     [Space(10f)]
     [SerializeField] GridLayoutGroup cardParentGrid;
     [SerializeField] RectTransform cardParentRectTransform;
 
 
+
+    CardPlaceAnimation[] cardAnim;
+
+    BlindCardPlaceAnimation blindCardAnim;
+
+    private void Awake()
+    {
+        cardAnim = new CardPlaceAnimation[]
+        {
+            blindCardAnim = new(this)
+        };
+    }
 
     //게임 시작시 카드배치
     public List<Cards> StartCardPlacement(int levelValue, MemberSpritesContainer memberSpritesContainer, Cards cardPrefab)
@@ -28,14 +40,14 @@ public class CardPlacementController : MonoBehaviour
         var totalCardCount = leveledColumnCount * (leveledColumnCount - 1);
 
 
-        SetCellSize(leveledColumnCount, cardPrefab.size);
+        SetCellSize(totalCardCount, cardPrefab);
 
         SetCardKeyList(totalCardCount, memberSpritesContainer);
 
         SetCardTable(totalCardCount, memberSpritesContainer, cardPrefab);
 
 
-        StartCoroutine(AnimationPlaceCards(placeAnimationTime));
+        StartCoroutine(cardAnim[0].Play());
 
         return placedCardList;
     }
@@ -96,7 +108,7 @@ public class CardPlacementController : MonoBehaviour
 
             placedCardList.Add(targetCard);
 
-            targetCard.gameObject.SetActive(true);
+            targetCard.gameObject.SetActive(false);
 
             targetCard.Init(cardKeyList[i], memberSpriteList[cardKeyList[i].Item1][cardKeyList[i].Item2]);
         }
@@ -104,40 +116,42 @@ public class CardPlacementController : MonoBehaviour
 
 
 
-    void SetCellSize(int leveledColumnCount ,Vector2 cardSize)
+    void SetCellSize(int totalCardCount, Cards targetCard)
     {
-        float placeAreaHorizontal = 1080 - cardParentGrid.padding.horizontal;
+        float cardRatio = targetCard.size.y / targetCard.size.x;
 
-        float cellSizeX = (placeAreaHorizontal - cardParentGrid.spacing.x * leveledColumnCount) / leveledColumnCount;
+        Vector2 cellSize = Vector2.zero;
 
-        float cellSizeY = cellSizeX * (cardSize.y / cardSize.x);
-
-        cardParentGrid.cellSize = new(cellSizeX, cellSizeY);
-    }
+        float screenWidth = Screen.width - cardParentGrid.padding.horizontal;
+        float screenHeight = Screen.height - cardParentGrid.padding.vertical;
 
 
-    IEnumerator AnimationPlaceCards(float placeAnimTime)
-    {
-        var gameManager = GameManager.instance;
-
-        gameManager.touchBlockPanel.enabled = true;
-
-        float animSpeed = placeAnimTime / placedCardList.Count;
-
-        foreach (var item in placedCardList)
+        for (int row = 1; row < totalCardCount; row++)
         {
-            item.gameObject.SetActive(false);
+            if(totalCardCount % row == 0)
+            {
+                int col = totalCardCount / row;
+
+                float currentScreenWidth = screenWidth - (cardParentGrid.spacing.x * (col - 1));
+                float currentScreenHeight = screenHeight - (cardParentGrid.spacing.y * (row - 1));
+
+
+                float cardMaxWidth = currentScreenWidth / col;
+                float cardMaxHeight = currentScreenHeight / row;
+
+
+                float ratioCardWidth = cardMaxHeight / cardRatio;
+
+                float bestCardWidth = Mathf.Min(cardMaxWidth, ratioCardWidth);
+                float bestCardHeight = bestCardWidth * cardRatio;
+
+                if (bestCardWidth > cellSize.x)
+                {
+                    cellSize = new(bestCardWidth, bestCardHeight);
+                }
+            }
         }
 
-        foreach (var item in placedCardList)
-        {
-            item.gameObject.SetActive(true);
-
-            yield return new WaitForSeconds(animSpeed);
-        }
-
-        gameManager.touchBlockPanel.enabled = false;
-
-        StartCoroutine(gameManager.TimeFlowCoroutine());
+        cardParentGrid.cellSize = cellSize;
     }
 }

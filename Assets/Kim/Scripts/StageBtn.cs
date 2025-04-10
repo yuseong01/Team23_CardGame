@@ -11,7 +11,8 @@ public class StageBtn : MonoBehaviour
     [SerializeField] private Text bestTimeText;
 
     [SerializeField] private Button stageStartButton;
-    [SerializeField] private Image mainIcon;
+    
+    //[SerializeField] private Image mainIcon;
     [SerializeField] private EndGameUI endGameUI;
     
     public GameObject lockImageGameObject;
@@ -19,6 +20,7 @@ public class StageBtn : MonoBehaviour
     {
         ResetBestTimePlayerPrefs();
     }
+
     public void Init(int _level, Sprite iconSprite)
     {
         stageText.text = "Stage " + _level.ToString();
@@ -36,7 +38,7 @@ public class StageBtn : MonoBehaviour
         }
 
 
-        mainIcon.sprite = iconSprite;
+        //mainIcon.sprite = iconSprite;
         stageStartButton.onClick.AddListener(() => StartStage(_level));
     }
 
