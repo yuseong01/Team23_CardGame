@@ -42,15 +42,15 @@ public class Cards : MonoBehaviour
         selectImage.gameObject.SetActive(true);
 
 
-        if (GameManager.instance.firstCard == null)
+        if (CardGameController.instance.firstCard == null)
         {
-            GameManager.instance.firstCard = this;
+            CardGameController.instance.firstCard = this;
         }
         else
         {
-            GameManager.instance.secondCard = this;
+            CardGameController.instance.secondCard = this;
 
-            StartCoroutine(GameManager.instance.CardMatched());
+            StartCoroutine(CardGameController.instance.CardMatched());
         }
     }
 
