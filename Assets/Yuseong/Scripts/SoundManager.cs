@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    public static SoundManager instance;
+
     [SerializeField] AudioSource bgmAudioSource;
     [SerializeField] AudioSource CardSoundAudioSource;
     [SerializeField] AudioSource StageStateAudioSource;
@@ -18,6 +21,11 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip stageClearClip;
     [SerializeField] private AudioClip stageFailClip;
 
+    private void Awake()
+    {
+        instance = this;
+
+    }
 
 
 

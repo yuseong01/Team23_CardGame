@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class StageBtn : MonoBehaviour
 {    
-    private float bestTime;
     
     [SerializeField] private Text stageText;
     [SerializeField] private Text bestTimeText;
@@ -30,6 +29,9 @@ public class StageBtn : MonoBehaviour
 
 
     public (GameManager.CardGamePlaceMode, GameManager.CardGameEventMode) selectMode;
+
+    private float bestTime;
+
 
     private void Awake()
     {
@@ -88,8 +90,6 @@ public class StageBtn : MonoBehaviour
 
     public void GetBestTime(float bestTime)
     {
-        Debug.Log("GetTimeTest");
-
         this.bestTime = bestTime;
 
         SetBestTime();

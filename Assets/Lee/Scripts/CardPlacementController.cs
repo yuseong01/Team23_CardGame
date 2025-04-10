@@ -125,7 +125,7 @@ public class CardPlacementController : MonoBehaviour
     }
 
 
-
+    //카드 스케일 정해야 카드를 꽉채움 화면에
     void SetCellSize(int totalCardCount, Cards targetCard)
     {
         float cardRatio = targetCard.size.y / targetCard.size.x;

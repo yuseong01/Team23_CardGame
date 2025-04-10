@@ -7,7 +7,6 @@ public class CardGameController : MonoBehaviour
 {
     public static CardGameController instance;
 
-    int remainCard;
 
     [SerializeField] private SoundManager soundManager;
     [SerializeField] private CardPlacementController cardPlacementController;
@@ -60,7 +59,7 @@ public class CardGameController : MonoBehaviour
             secondCard.OnSuccess();
 
             //남은 카드 수 감소
-            remainCard -= 2;
+            GameManager.instance.remainCard -= 2;
         }
         //두 카드가 같지 않다면
         else

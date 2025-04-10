@@ -19,12 +19,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Image timeBar;
     [SerializeField] private Color startColor;
     [SerializeField] private int level = 0;
-    [SerializeField] private int remainCard = 16;
     [SerializeField] private Sprite[] stageIconSprites;
     [SerializeField] private Sprite[] members1;
     [SerializeField] private Sprite[] members2;
     [SerializeField] private Sprite[] members3;
     [SerializeField] private CardGameController cardGameController;
+    [SerializeField] private Slider timeSlideBar;
 
     [Space(10f)]
     public GameObject endPanel;
@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     public int maxStageLevel;
     public bool isTouchStartScreen;
     public bool isPlaying = false;
+
+    public int remainCard;
 
 
     public MemberSpritesContainer memberSpritesContainer;
@@ -93,9 +95,10 @@ public class GameManager : MonoBehaviour
             //시간이 지나갈수록 타임바가 차오름
             time += Time.deltaTime;
             float progress = 1 - Mathf.Clamp01(time / timeLimit);
-            timeBar.fillAmount = progress;
+            timeSlideBar.value = progress;
             //타임바의 비율에 따라 타임바 색 조정
             TimeBarColor(progress);
+
 
             //테스트용 성공 커맨드
             if (Input.GetKeyDown(KeyCode.D))
@@ -133,7 +136,7 @@ public class GameManager : MonoBehaviour
 
         time = 0.0f;
         Time.timeScale = 1.0f;
-        timeBar.fillAmount = 0.0f;
+        timeSlideBar.value = 0.0f;
 
         SetTimeLimit(level);    // 레벨에 따라 timeLimit 설정
 
@@ -176,12 +179,16 @@ public class GameManager : MonoBehaviour
                 stageController.UpdateBestTime(level, time);
             }
 
+            SoundManager.instance.PlayStageClearSound(true);
+
             endCardGameUI.OpenWinUI(time);
         }
         else
         {
             //실패시
             endCardGameUI.OpenFailUI();
+
+            SoundManager.instance.PlayStageClearSound(false);
         }
         isPlaying = false;
 

@@ -10,7 +10,6 @@ public class StageController : MonoBehaviour
     [SerializeField] private StageBtn StageBtnPrefab;
 
     [SerializeField] private GameObject ModChangedBtnPrefab;
-    //[SerializeField] private Transform ModChangedBtnPrefabParents;
 
     [SerializeField] private ScrollController scrollController;
     [SerializeField] int modcount;
@@ -31,28 +30,9 @@ public class StageController : MonoBehaviour
 
             stageBtnList.Add(newBtn);
         }
-        //ModChangeButtonCreate(modcount);
+
         scrollController.Init(stageBtnList);
     }
-
- /*   public void ModChangeButtonCreate(int modCount)
-    {
-
-        for (int i = 0; i < modCount; i++)
-        {
-            *//*GameObject modButton = Instantiate(ModChangedBtnPrefab, ModChangedBtnPrefabParents);
-
-            modButton.GetComponentInChildren<Text>().text = "Mod" + i;*//*
-
-            GameObject capturedButon = modButton;
-
-            capturedButon.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                modButton.transform.SetSiblingIndex(0);
-            });
-        }
-    }
-*/
 
     public void UpdateButtonLockImage(int clearedLevel)
     {

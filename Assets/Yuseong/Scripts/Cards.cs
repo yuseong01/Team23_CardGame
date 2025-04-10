@@ -51,6 +51,8 @@ public class Cards : MonoBehaviour
 
             StartCoroutine(CardGameController.instance.CardMatched());
         }
+
+        SoundManager.instance.PlayTouchCardSound();
     }
 
     public void OpenCard()
@@ -60,6 +62,7 @@ public class Cards : MonoBehaviour
         frontImage.gameObject.SetActive(true);
         backImage.gameObject.SetActive(false);
 
+        SoundManager.instance.PlaySetCardSound();
         isOpen = true;
     }
 
@@ -73,6 +76,8 @@ public class Cards : MonoBehaviour
         backImage.gameObject.SetActive(true);
 
         selectImage.gameObject.SetActive(false);
+
+        SoundManager.instance.PlaySetCardSound();
 
         isOpen = false;
     }
