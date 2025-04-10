@@ -43,6 +43,7 @@ public class EndGameUI : MonoBehaviour
     // 성공 했을 때 UI
     public void OpenWinUI(float score)
     {
+
         SetTitleActive(true);
         timerTxt.text = score.ToString("N2"); // 점수 세팅
         profile.SetProfile(0, names[0], clearColor); // 처음 이미지를 하나 세팅
@@ -91,7 +92,6 @@ public class EndGameUI : MonoBehaviour
             yield return new WaitForSeconds(profileChangeInterval); // n초마다 변경
 
             profile.SetProfile(i, names[i]);
-
             i++;
         }
     }

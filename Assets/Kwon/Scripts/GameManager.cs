@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
         //프레임조정
         Application.targetFrameRate = 60;
         //PlayerPrefs에 저장된게 있으면 clearedLevel 초기화
-        //if (PlayerPrefs.HasKey(levelkey)) { clearedLevel = PlayerPrefs.GetInt(levelkey); }
+        //if (PlayerPrefs.HasKey(levelkey)) {clearedLevel = PlayerPrefs.GetInt(levelkey);}
 
         memberSpritesContainer = new MemberSpritesContainer();
         memberSpritesContainer.Init(5);
@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
         stageController.OnStartCardGame();
 
         //stageController에서 카드 배치가 끝난 뒤 isPlaying을 true로 변경해줄 예정
-        //isPlaying = true;
+        isPlaying = true;
     }
 
     private void GameOver()
@@ -146,6 +146,18 @@ public class GameManager : MonoBehaviour
                 clearedLevel = level;
                 //PlayerPrefs.SetInt(levelkey, clearedLevel);
             }
+
+            string timeKey = "BestTime_" + level;
+            float previousBestTime= PlayerPrefs.GetFloat(timeKey,float.MaxValue);
+
+            if (time < previousBestTime)
+            {
+                PlayerPrefs.SetFloat(timeKey,time);
+                PlayerPrefs.Save();
+
+                stageController.UpdateBestTime(level, time);
+            }
+
             endCardGameUI.OpenWinUI(time);
         }
         else
@@ -156,6 +168,9 @@ public class GameManager : MonoBehaviour
         isPlaying = false;
 
         cardPlacementController.EndCardPalcement();
+
+
+
         Debug.Log("게임 종료");
     }
 
