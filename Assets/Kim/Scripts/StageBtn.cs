@@ -15,12 +15,24 @@ public class StageBtn : MonoBehaviour
     [SerializeField] private EndGameUI endGameUI;
     
     public GameObject lockImageGameObject;
-
+    private void Update()
+    {
+        ResetBestTimePlayerPrefs();
+    }
     public void Init(int _level, Sprite iconSprite)
     {
         stageText.text = "Stage " + _level.ToString();
-       // bestTimeText.text = "";
-        
+
+        string timeKey = "BestTime_" + _level;
+        float saveBestTime=PlayerPrefs.GetFloat(timeKey,-1);
+        if (saveBestTime != -1)
+        {
+            bestTimeText.text="Best Time: "+saveBestTime.ToString("N2");
+        }
+        else
+        {
+            bestTimeText.text = "";
+        }
         mainIcon.sprite = iconSprite;
         stageStartButton.onClick.AddListener(() => StartStage(_level));
     }
@@ -32,13 +44,19 @@ public class StageBtn : MonoBehaviour
     public void GetBestTime(float bestTime)
     {
         Debug.Log("GetTimeTest");
-        //EndUI에서 클리어했을때의 스코어를 가져옴
-        if (this.bestTime > bestTime)
-        {
-            this.bestTime = bestTime;
-        }
+
+        this.bestTime = bestTime;
 
         SetBestTime();
+    }
+
+    public void ResetBestTimePlayerPrefs()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+        }
     }
 
     public void SetBestTime()

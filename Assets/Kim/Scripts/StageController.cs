@@ -41,6 +41,14 @@ public class StageController : MonoBehaviour
         }
     }
 
+   public void UpdateBestTime(int _level, float time)
+    {
+        if (stageBtnList != null && _level - 1 < stageBtnList.Count)
+        {
+            stageBtnList[_level-1].GetBestTime(time);
+        }
+    }
+
     public void OnStartCardGame()
     {
         stageSelectUIGameObject.SetActive(false);
