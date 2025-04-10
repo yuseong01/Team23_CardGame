@@ -136,9 +136,17 @@ PrefabInstance:
       value: SoundManager
       objectReference: {fileID: 0}
     - target: {fileID: 5826172186313320005, guid: 91f629f57eb38430a922862313d16df4, type: 3}
+      propertyPath: stageFailClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 79e6baad2fd414b82a6d49ce1568d2e5, type: 3}
+    - target: {fileID: 5826172186313320005, guid: 91f629f57eb38430a922862313d16df4, type: 3}
       propertyPath: bgmAudioSource
       value: 
       objectReference: {fileID: 1225404722}
+    - target: {fileID: 5826172186313320005, guid: 91f629f57eb38430a922862313d16df4, type: 3}
+      propertyPath: stageClearClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
     - target: {fileID: 5826172186313320005, guid: 91f629f57eb38430a922862313d16df4, type: 3}
       propertyPath: CardSoundAudioSource
       value: 

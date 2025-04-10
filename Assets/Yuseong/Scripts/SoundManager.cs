@@ -6,6 +6,8 @@ public class SoundManager : MonoBehaviour
 {
     [SerializeField] AudioSource bgmAudioSource;
     [SerializeField] AudioSource CardSoundAudioSource;
+    [SerializeField] AudioSource StageStateAudioSource;
+
 
     //unity변수에 들어갈부분, 다른곳에서 요청하는 각각의 해당하는 오디오소스의 교체를 위해
     [SerializeField] private AudioClip flipSuccessSoundClip;    
@@ -13,6 +15,9 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip gameBGMClip;    
     [SerializeField] private AudioClip setCardClip;
     [SerializeField] private AudioClip touchCardClip;
+    [SerializeField] private AudioClip stageClearClip;
+    [SerializeField] private AudioClip stageFailClip;
+
 
 
 
@@ -40,5 +45,18 @@ public class SoundManager : MonoBehaviour
     {
         CardSoundAudioSource.clip = flipFailSoundClip;
         CardSoundAudioSource.Play();
+    }
+    public void PlayStageClearSound(bool stageClearCheck)
+    {
+        if (stageClearCheck)
+        {
+            StageStateAudioSource.clip = stageClearClip;
+
+        }
+        else
+        {
+            StageStateAudioSource.clip = stageFailClip;
+        }
+        StageStateAudioSource.Play();
     }
 }
