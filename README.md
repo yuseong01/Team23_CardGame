@@ -65,6 +65,12 @@ GameManager
 
 
 ---
+📂 Architecture Diagram
+
+게임 시스템 구조를 한눈에 볼 수 있도록 설계한 아키텍처 다이어그램입니다.
+<img width="728" alt="아키텍처다이어그램" src="https://github.com/user-attachments/assets/bb3f644a-d743-4a73-b904-768c75e7954e" />
+
+---
 
 ## 🛠️ Tech Stack
 
@@ -72,3 +78,4 @@ GameManager
 - C#
 
 ---
+
