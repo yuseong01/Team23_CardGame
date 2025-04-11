@@ -20,23 +20,19 @@ public class CardPlacementController : MonoBehaviour
 
 
 
-    CardPlaceAnimation[] cardAnim;
-
+   
     BlindCardPlaceAnimation blindCardAnim;
     BasicCardPlaceAnimation basicCardAnim;
 
     private void Awake()
     {
-        cardAnim = new CardPlaceAnimation[]
-        {
-            basicCardAnim = new(this),
-            blindCardAnim = new(this)
-        };
+        blindCardAnim = new(this);
+        basicCardAnim = new(this);
     }
 
 
     //게임 시작시 카드배치
-    public List<Cards> StartCardPlacement(int levelValue, MemberSpritesContainer memberSpritesContainer, Cards cardPrefab, GameManager.CardGamePlaceMode placeMode)
+    public List<Cards> StartCardPlacement(int levelValue, MemberSpritesContainer memberSpritesContainer, Cards cardPrefab, GameManager.CardGameMode placeMode)
     {
         var leveledColumnCount = defalutColumnCount + levelValue;
 
@@ -50,18 +46,16 @@ public class CardPlacementController : MonoBehaviour
         SetCardTable(totalCardCount, memberSpritesContainer, cardPrefab);
 
 
-        int gameModeIndex = 0;
-
-        if(placeMode == GameManager.CardGamePlaceMode.Basic)
+        switch (placeMode)
         {
-            gameModeIndex = 0;
-        }
-        else
-        {
-            gameModeIndex = 1;
+            case GameManager.CardGameMode.Basic:
+                StartCoroutine(basicCardAnim.Play());
+                break;
+            case GameManager.CardGameMode.Blind:
+                StartCoroutine(blindCardAnim.Play());
+                break;
         }
 
-        StartCoroutine(cardAnim[gameModeIndex].Play());
 
         return placedCardList;
     }

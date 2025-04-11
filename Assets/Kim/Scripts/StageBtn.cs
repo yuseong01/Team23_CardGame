@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class StageBtn : MonoBehaviour
 {    
@@ -28,18 +29,26 @@ public class StageBtn : MonoBehaviour
     public Button stageStartButton;
 
 
-    public (GameManager.CardGamePlaceMode, GameManager.CardGameEventMode) selectMode;
+    public (GameManager.CardGameMode, GameManager.CardGameMode) currentGameMode;
 
     private float bestTime;
+
+    Dictionary<(GameManager.CardGameMode, GameManager.CardGameMode), float> bestTimeDict = new();
 
 
     private void Awake()
     {
-        basicFirstButton.onClick.AddListener(() => selectMode.Item1 = GameManager.CardGamePlaceMode.Blind);
-        blindFirstButton.onClick.AddListener(() => selectMode.Item1 = GameManager.CardGamePlaceMode.Basic);
+        currentGameMode = new(GameManager.CardGameMode.Basic, GameManager.CardGameMode.Basic);
 
-        basicSecondButton.onClick.AddListener(() => selectMode.Item2 = GameManager.CardGameEventMode.Shuffle);
-        shuffleSecondButton.onClick.AddListener(() => selectMode.Item2 = GameManager.CardGameEventMode.Basic);
+        bestTimeDict.Add((GameManager.CardGameMode.Basic, GameManager.CardGameMode.Basic), float.MaxValue);
+        bestTimeDict.Add((GameManager.CardGameMode.Blind, GameManager.CardGameMode.Basic), float.MaxValue);
+        bestTimeDict.Add((GameManager.CardGameMode.Basic, GameManager.CardGameMode.Shuffle), float.MaxValue);
+        bestTimeDict.Add((GameManager.CardGameMode.Blind, GameManager.CardGameMode.Shuffle), float.MaxValue);
+
+        basicFirstButton.onClick.AddListener(() => currentGameMode.Item1 = GameManager.CardGameMode.Blind);
+        blindFirstButton.onClick.AddListener(() => currentGameMode.Item1 = GameManager.CardGameMode.Basic);
+        basicSecondButton.onClick.AddListener(() => currentGameMode.Item2 = GameManager.CardGameMode.Shuffle);
+        shuffleSecondButton.onClick.AddListener(() => currentGameMode.Item2 = GameManager.CardGameMode.Basic);
 
         gameModeButtons = new Button[]
         {
@@ -51,7 +60,12 @@ public class StageBtn : MonoBehaviour
 
         foreach (var item in gameModeButtons)
         {
-            item.onClick.AddListener(() => item.transform.SetAsFirstSibling());
+            item.onClick.AddListener(() =>
+            {
+                item.transform.SetAsFirstSibling();
+                SetBestTime();
+            });
+
         }
     }
 
@@ -69,14 +83,16 @@ public class StageBtn : MonoBehaviour
 
         string timeKey = "BestTime_" + _level;
         float saveBestTime = PlayerPrefs.GetFloat(timeKey, -1);
-        if (saveBestTime != -1)
-        {
-            bestTimeText.text = "Best Time: " + saveBestTime.ToString("N2");
-        }
-        else
-        {
-            bestTimeText.text = "";
-        }
+        /*  if (saveBestTime != -1)
+          {
+              bestTimeText.text = "Best Time: " + saveBestTime.ToString("N2");
+          }
+          else
+          {
+              bestTimeText.text = "";
+          }*/
+
+        SetBestTime();
 
 
         //mainIcon.sprite = iconSprite;
@@ -85,12 +101,20 @@ public class StageBtn : MonoBehaviour
 
     public void StartStage(int _level)
     {
-        GameManager.instance.StartCardGame(_level, selectMode);
+        GameManager.instance.StartCardGame(_level, currentGameMode);
     }
 
-    public void GetBestTime(float bestTime)
+    public void GetBestTime((GameManager.CardGameMode, GameManager.CardGameMode) gameMode, float currentTime)
     {
-        this.bestTime = bestTime;
+        this.bestTime = currentTime;
+
+
+        if (bestTimeDict[gameMode] > currentTime)
+        {
+            bestTimeDict[gameMode] = currentTime;
+        }
+
+        bestTimeText.text = "Best Time: " + bestTimeDict[gameMode].ToString("N2");
 
         SetBestTime();
     }
@@ -107,9 +131,6 @@ public class StageBtn : MonoBehaviour
 
     public void SetBestTime()
     {
-        Debug.Log("SetTimeTest");
-        Debug.Log(bestTime);
-
-        bestTimeText.text= "Best Time: "+ bestTime.ToString("N2");
+        bestTimeText.text= "Best Time: " + bestTimeDict[currentGameMode].ToString("N2");
     }
 }

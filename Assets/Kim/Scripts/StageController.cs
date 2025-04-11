@@ -16,6 +16,7 @@ public class StageController : MonoBehaviour
 
     List<StageBtn> stageBtnList;
 
+
     public void StageButtonCreate(Sprite[] memberIconsArray)
     {
         stageBtnList = new();
@@ -61,11 +62,11 @@ public class StageController : MonoBehaviour
         }
     }
 
-    public void UpdateBestTime(int _level, float time)
+    public void UpdateBestTime((GameManager.CardGameMode, GameManager.CardGameMode) gameMode, int _level, float time)
     {
         if (stageBtnList != null && _level - 1 < stageBtnList.Count)
         {
-            stageBtnList[_level - 1].GetBestTime(time);
+            stageBtnList[_level - 1].GetBestTime(gameMode, time);
         }
     }
 

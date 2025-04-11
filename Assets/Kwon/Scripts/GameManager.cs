@@ -37,16 +37,16 @@ public class GameManager : MonoBehaviour
     public MemberSpritesContainer memberSpritesContainer;
     public CardPlacementController cardPlacementController;
 
-    public enum CardGamePlaceMode
+ 
+
+    public enum CardGameMode
     {
+        None,
         Basic,
-        Blind
-    }
-    public enum CardGameEventMode
-    {
-        Basic,
+        Blind,
         Shuffle
     }
+    public (CardGameMode, CardGameMode) currentGameMode;
 
 
     private void Awake()
@@ -126,15 +126,18 @@ public class GameManager : MonoBehaviour
         time += penaltyAmount;
     }
 
-    public void StartCardGame(int level, (CardGamePlaceMode, CardGameEventMode) gameMode)
+    public void StartCardGame(int level, (CardGameMode, CardGameMode) gameMode)
     {
         this.level = level;
+
+        currentGameMode = gameMode;
 
         time = 0.0f;
         Time.timeScale = 1.0f;
         timeSlideBar.value = 0.0f;
 
         SetTimeLimit(level);    // 레벨에 따라 timeLimit 설정
+
 
         stageController.OnStartCardGame();
 
@@ -145,7 +148,7 @@ public class GameManager : MonoBehaviour
         //stageController에서 카드 배치가 끝난 뒤 isPlaying을 true로 변경해줄 예정
         isPlaying = true;
 
-        if (gameMode.Item2 == CardGameEventMode.Shuffle)
+        if (gameMode.Item2 == CardGameMode.Shuffle)
         {
             StartCoroutine(CardGameController.instance.PlayCardShuffle());
         }
@@ -172,8 +175,10 @@ public class GameManager : MonoBehaviour
                 PlayerPrefs.SetFloat(timeKey,time);
                 PlayerPrefs.Save();
 
-                stageController.UpdateBestTime(level, time);
             }
+
+            stageController.UpdateBestTime(currentGameMode, level, time);
+
 
             SoundManager.instance.PlayStageClearSound(true);
 
