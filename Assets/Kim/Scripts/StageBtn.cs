@@ -82,15 +82,15 @@ public class StageBtn : MonoBehaviour
 
 
         string timeKey = "BestTime_" + _level;
-        float saveBestTime = PlayerPrefs.GetFloat(timeKey, -1);
-        /*  if (saveBestTime != -1)
-          {
-              bestTimeText.text = "Best Time: " + saveBestTime.ToString("N2");
-          }
-          else
-          {
-              bestTimeText.text = "";
-          }*/
+        /*float saveBestTime = PlayerPrefs.GetFloat(timeKey, -1);
+        if (saveBestTime != -1)
+        {
+            bestTimeText.text = "Best Time: " + saveBestTime.ToString("N2");
+        }
+        else
+        {
+            bestTimeText.text = "";
+        }*/
 
         SetBestTime();
 

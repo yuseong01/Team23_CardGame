@@ -62,11 +62,11 @@ public class StageController : MonoBehaviour
         }
     }
 
-    public void UpdateBestTime((GameManager.CardGameMode, GameManager.CardGameMode) gameMode, int _level, float time)
+    public void UpdateBestTime((GameManager.CardGameMode, GameManager.CardGameMode) gameMode, int _level, float currentTime)
     {
         if (stageBtnList != null && _level - 1 < stageBtnList.Count)
         {
-            stageBtnList[_level - 1].GetBestTime(gameMode, time);
+            stageBtnList[_level - 1].GetBestTime(gameMode, currentTime);
         }
     }
 
