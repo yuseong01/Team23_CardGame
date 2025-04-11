@@ -1,4 +1,4 @@
-# 파랑이 좋겠군..
+<img width="728" alt="클래스다이어그램" src="https://github.com/user-attachments/assets/55d4eb0e-e5aa-45cf-bec6-c1bc74b32229" /># 파랑이 좋겠군..
 First Card Game Project 🎮
 
 Overview
@@ -13,7 +13,8 @@ GameManager → CardGameController → CardPlacementController → CardPlaceAnim
            ↘ SoundManager  
            ↘ UI 관리 (StartPanel / EndGameUI)  
 Class Diagram
-<img src="https://github.com/your-repo-path/클래스다이어그램.png" alt="Class Diagram" />
+<img width="728" alt="클래스다이어그램" src="https://github.com/user-attachments/assets/2e886cf8-e167-4a06-9c4d-d1523b740639" />
+
 Core Components
 
 Class	역할
