@@ -14,7 +14,7 @@ Unity 기반 Card Placement Game
 GameManager
 ├── CardGameController
 │   ├── CardPlacementController
-│   │   ├── CardPlaceAnimation (추상 클래스)
+│   │   ├── CardPlaceAnimation 
 │   │   │   ├── BasicCardPlaceAnimation
 │   │   │   ├── ShuffleCardPlaceAnimation
 │   │   │   └── BlindCardPlaceAnimation
@@ -36,6 +36,7 @@ GameManager
 
 | 기능 | 설명 |
 |------|------|
+| Game Manager | 게임 전반 로직 관리, 상태 전환 및 컨트롤 |
 | Card Placement | 카드 셔플, 블라인드, 기본 배치 애니메이션 지원 |
 | Sound Manager | 카드 오픈 / 성공 / 실패 등 효과음 처리 |
 | Stage Control | 스테이지 이동 및 상태 관리 |
@@ -46,8 +47,28 @@ GameManager
 
 ## 🎬 Gameplay
 
-> 게임 플레이 시연 영상
+> 게임 플레이 사진
 
-[![Card Game Play](https://img.youtube.com/vi/영상ID/0.jpg)](https://www.youtube.com/watch?v=영상ID)
+<img width="272" alt="스크린샷 2025-04-11 오후 5 37 42" src="https://github.com/user-attachments/assets/bc7bc09e-b2e3-4a19-afde-1d2e7d10a413" />
+<img width="267" alt="스크린샷 2025-04-11 오후 5 39 26" src="https://github.com/user-attachments/assets/7272ef58-6788-419e-8b8e-f1a492550f72" />
+<img width="271" alt="스크린샷 2025-04-11 오후 5 38 29" src="https://github.com/user-attachments/assets/4d0d8c9f-3108-4564-a3dc-470cd17cb8d8" />
+<img width="266" alt="스크린샷 2025-04-11 오후 5 38 35" src="https://github.com/user-attachments/assets/0296abdd-a09e-43f7-9d42-f1a7ddbe3337" />
+<img width="262" alt="스크린샷 2025-04-11 오후 5 39 14" src="https://github.com/user-attachments/assets/54d6b1ca-7eaa-4243-80c1-9787242d400e" />
+
+
+---
+
+## 👥 역할 분담
+
+> 팀원별 담당 영역 및 역할
+<img width="1254" alt="image" src="https://github.com/user-attachments/assets/9bbb5182-c001-4069-9e98-e2189249cc3b" />
+
+
+---
+
+## 🛠️ Tech Stack
+
+- Unity
+- C#
 
 ---
