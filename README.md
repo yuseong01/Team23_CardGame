@@ -53,7 +53,6 @@ GameManager
 <img width="267" alt="스크린샷 2025-04-11 오후 5 39 26" src="https://github.com/user-attachments/assets/7272ef58-6788-419e-8b8e-f1a492550f72" />
 <img width="271" alt="스크린샷 2025-04-11 오후 5 38 29" src="https://github.com/user-attachments/assets/4d0d8c9f-3108-4564-a3dc-470cd17cb8d8" />
 <img width="266" alt="스크린샷 2025-04-11 오후 5 38 35" src="https://github.com/user-attachments/assets/0296abdd-a09e-43f7-9d42-f1a7ddbe3337" />
-<img width="262" alt="스크린샷 2025-04-11 오후 5 39 14" src="https://github.com/user-attachments/assets/54d6b1ca-7eaa-4243-80c1-9787242d400e" />
 
 
 ---
