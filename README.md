@@ -6,6 +6,19 @@ Unity 기반 Card Placement Game
 
 ---
 
+## ✨ 주요 기능
+
+| 기능 | 설명 |
+|------|------|
+| Game Manager | 게임 전반 로직 관리, 상태 전환 및 컨트롤 |
+| Card Placement | 카드 셔플, 블라인드, 기본 배치 애니메이션 지원 |
+| Sound Manager | 카드 오픈 / 성공 / 실패 등 효과음 처리 |
+| Stage Control | 스테이지 이동 및 상태 관리 |
+| Object Pooling | Sparkle 이펙트 풀링 처리로 퍼포먼스 최적화 |
+| UI Control | 게임 시작 / 종료 / 스테이지 UI 구성 |
+
+---
+
 ## 📂 Architecture
 
 > 주요 클래스 설계 및 흐름
@@ -29,19 +42,6 @@ GameManager
     ├── SparkleEffect
     └── SparkleObjectPoolManager
 ```
-
----
-
-## ✨ 주요 기능
-
-| 기능 | 설명 |
-|------|------|
-| Game Manager | 게임 전반 로직 관리, 상태 전환 및 컨트롤 |
-| Card Placement | 카드 셔플, 블라인드, 기본 배치 애니메이션 지원 |
-| Sound Manager | 카드 오픈 / 성공 / 실패 등 효과음 처리 |
-| Stage Control | 스테이지 이동 및 상태 관리 |
-| Object Pooling | Sparkle 이펙트 풀링 처리로 퍼포먼스 최적화 |
-| UI Control | 게임 시작 / 종료 / 스테이지 UI 구성 |
 
 ---
 
